@@ -1,40 +1,43 @@
-use colored_rs::Colorize;
 use std::time::SystemTime;
 
-// extern crate drm_rs;
+use colored_rs::Colorize;
+
+extern crate drm_rs;
 // extern crate gbm_rs;
 extern crate libc;
 
-// #[macro_use]
-// extern crate logger_rs;
+#[macro_use]
+extern crate logger_rs;
 
 #[allow(dead_code)]
 mod oflag;
 mod utility;
 
 fn main() {
-    // print_info!("====================[grid-rs]====================");
+    print_debug!("====================[grid-rs]====================");
     println!(
         "supported_surface_formats: {}",
-        utility::pretty_print_system_time(SystemTime::now()).bright_white()
+        utility::pretty_print_system_time(SystemTime::now()).red()
+        
+        // colored_rs::Colorize::red(utility::pretty_print_system_time(SystemTime::now()))
     );
-    // print_debug!(
-    //     "datetime: {}",
-    //     utility::pretty_print_system_time(SystemTime::now()).white()
-    // );
+    print_debug!(
+        "datetime: {}",
+        utility::pretty_print_system_time(SystemTime::now())
+    );
 
-    // let default_video_card_info = utility::get_default_video_card_info().unwrap();
-    // println!(
-    //     "default_video_card path: {:#?}, fd: {:#?}",
-    //     default_video_card_info.path, default_video_card_info.fd
-    // );
+    let default_video_card_info = utility::get_default_video_card_info().unwrap();
+    println!(
+        "default_video_card path: {:#?}, fd: {:#?}",
+        default_video_card_info.path, default_video_card_info.fd
+    );
 
-    // let fd = default_video_card_info.fd;
-    // let drm = drm_rs::core::Drm::new(fd, |conn| {
-    //     conn.get_connection_status() == drm_rs::ConnectionStatus::Connected
-    // });
+    let fd = default_video_card_info.fd;
+    let drm = drm_rs::core::Drm::new(fd, |conn| {
+        conn.get_connection_status() == drm_rs::ConnectionStatus::Connected
+    });
 
-    // let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
+    let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
 
     // let gbm = gbm_rs::Gbm::new(
     //     fd,

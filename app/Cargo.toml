@@ -9,3 +9,5 @@ edition = "2021"
 libc = "*"
 time = { version = "*", features = ["local-offset", "formatting", "macros"] }
 colored-rs = { path="../colored-rs" }
+logger-rs = { path="../logger-rs" }
+drm-rs = { path="../kernel/drm-rs" }
