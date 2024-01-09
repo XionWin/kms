@@ -4,5 +4,6 @@ members = [
     "app",
     "colored-rs",
     "kernel/drm-rs",
-    "kernel/gbm-rs"
+    "kernel/gbm-rs",
+    "kernel/egl-rs"
 ]

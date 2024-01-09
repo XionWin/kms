@@ -34,10 +34,10 @@ fn main() {
     let drm = drm_rs::core::Drm::new(fd, |conn| {
         conn.get_connection_status() == drm_rs::ConnectionStatus::Connected
     });
+    let mode = drm.get_mode();
+    print_info!("actived mode name: {:#?}", mode.get_name());
 
     let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
-    let mode = drm.get_mode();
-    print_warning!("mode: {:#?}", mode);
 
     let gbm = gbm_rs::Gbm::new(
         fd,
@@ -46,7 +46,6 @@ fn main() {
         gbm_rs::def::SurfaceFormat::ARGB8888,
         vec![gbm_rs::def::FormatModifier::DRM_FORMAT_MOD_LINEAR],
     );
-    // print_warning!("gbm: {:#?}", gbm);
 
     let supported_surface_format = gbm_rs::def::SurfaceFormat::iter()
         .into_iter()
@@ -66,11 +65,12 @@ fn main() {
             .join(" ")
     );
 
-    // let mut _context: egl_rs::Context = egl_rs::Context::new(
-    //     gbm.get_surface().get_handle(),
-    //     gbm.get_surface().get_device().get_handle(),
-    //     width,
-    //     height,
-    //     true,
-    // );
+    let context: egl_rs::Context = egl_rs::Context::new(
+        gbm.get_surface().get_handle(),
+        gbm.get_surface().get_device().get_handle(),
+        width,
+        height,
+        true,
+    );
+    print_warning!("context: {:#?}", context);
 }
