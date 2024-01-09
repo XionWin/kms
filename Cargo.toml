@@ -1,5 +1,7 @@
 [workspace]
+resolver = "1"
 members = [ 
     "app",
-    "colored-rs"
+    "colored-rs",
+    "logger-rs"
 ]
