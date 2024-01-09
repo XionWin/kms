@@ -1,13 +1,13 @@
 use std::time::SystemTime;
 
-use colored_rs::Colorize;
 
 extern crate drm_rs;
 // extern crate gbm_rs;
 extern crate libc;
 
 #[macro_use]
-extern crate logger_rs;
+extern crate colored_rs;
+use colored_rs::Colorize;
 
 #[allow(dead_code)]
 mod oflag;
