@@ -4,3 +4,6 @@
 [submodule "logger-rs"]
 	path = logger-rs
 	url = https://github.com/XionWin/logger-rs.git
+[submodule "kernel/drm-rs"]
+	path = kernel/drm-rs
+	url = https://github.com/XionWin/drm-rs.git
