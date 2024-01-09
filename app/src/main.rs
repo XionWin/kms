@@ -1,9 +1,5 @@
 use std::time::SystemTime;
 
-extern crate drm_rs;
-extern crate gbm_rs;
-extern crate libc;
-
 #[macro_use]
 extern crate colored_rs;
 use colored_rs::Colorize;
