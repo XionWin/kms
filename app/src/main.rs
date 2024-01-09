@@ -21,7 +21,7 @@ fn main() {
 
     let default_video_card_info = utility::get_default_video_card_info().unwrap();
     print_info!(
-        "default_video_card path: {:#?}, fd: {:#?}",
+        "default_video_card_path: {:#?}, fd: {:#?}",
         default_video_card_info.path,
         default_video_card_info.fd
     );
@@ -31,7 +31,7 @@ fn main() {
         conn.get_connection_status() == drm_rs::ConnectionStatus::Connected
     });
     let mode = drm.get_mode();
-    print_info!("actived mode name: {:#?}", mode.get_name());
+    print_info!("actived_mode_name: {:#?}", mode.get_name());
 
     let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
 
