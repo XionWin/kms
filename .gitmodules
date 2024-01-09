@@ -1,6 +1,0 @@
-[submodule "colored-rs"]
-	path = colored-rs
-	url = https://www.github.com/xionwin/colored-rs.git
-[submodule "kms-rs"]
-	path = kms-rs
-	url = https://www.github.com/xionwin/kms-rs.git
