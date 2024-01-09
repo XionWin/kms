@@ -1,8 +1,7 @@
 use std::time::SystemTime;
 
-
 extern crate drm_rs;
-// extern crate gbm_rs;
+extern crate gbm_rs;
 extern crate libc;
 
 #[macro_use]
@@ -25,9 +24,10 @@ fn main() {
     );
 
     let default_video_card_info = utility::get_default_video_card_info().unwrap();
-    println!(
+    print_info!(
         "default_video_card path: {:#?}, fd: {:#?}",
-        default_video_card_info.path, default_video_card_info.fd
+        default_video_card_info.path,
+        default_video_card_info.fd
     );
 
     let fd = default_video_card_info.fd;
@@ -37,29 +37,30 @@ fn main() {
 
     let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
 
-    // let gbm = gbm_rs::Gbm::new(
-    //     fd,
-    //     width,
-    //     height,
-    //     gbm_rs::def::SurfaceFormat::ARGB8888,
-    //     vec![gbm_rs::def::FormatModifier::DRM_FORMAT_MOD_LINEAR],
-    // );
-    // print_warning!("gbm: {:#?}", gbm);
+    let gbm = gbm_rs::Gbm::new(
+        fd,
+        width,
+        height,
+        gbm_rs::def::SurfaceFormat::ARGB8888,
+        vec![gbm_rs::def::FormatModifier::DRM_FORMAT_MOD_LINEAR],
+    );
+    print_warning!("gbm: {:#?}", gbm);
 
-    // let supported_surface_format = gbm_rs::def::SurfaceFormat::iter()
-    //     .into_iter()
-    //     .filter(|format| {
-    //         gbm.get_surface()
-    //             .get_device()
-    //             .is_format_supported(*format, gbm_rs::def::SurfaceFlags::Linear)
-    //     })
-    //     .collect::<Vec<gbm_rs::def::SurfaceFormat>>();
+    let supported_surface_format = gbm_rs::def::SurfaceFormat::iter()
+        .into_iter()
+        .filter(|format| {
+            gbm.get_surface()
+                .get_device()
+                .is_format_supported(*format, gbm_rs::def::SurfaceFlags::Linear)
+        })
+        .collect::<Vec<gbm_rs::def::SurfaceFormat>>();
 
-    // print!("supported_surface_formats: ");
-    // supported_surface_format
-    //     .into_iter()
-    //     .for_each(|format| print!("{:?} ", format));
-    // println!();
+    print_info!(
+        "supported_surface_formats: {:?}",
+        supported_surface_format
+            .into_iter()
+            .for_each(|format| print!("{:?} ", format))
+    );
 
     // let mut _context: egl_rs::Context = egl_rs::Context::new(
     //     gbm.get_surface().get_handle(),

@@ -10,3 +10,4 @@ libc = "*"
 time = { version = "*", features = ["local-offset", "formatting", "macros"] }
 colored-rs = { path="../colored-rs" }
 drm-rs = { path="../kernel/drm-rs" }
+gbm-rs = { path="../kernel/gbm-rs" }

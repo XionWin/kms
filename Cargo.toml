@@ -3,5 +3,6 @@ resolver = "1"
 members = [ 
     "app",
     "colored-rs",
-    "kernel/drm-rs"
+    "kernel/drm-rs",
+    "kernel/gbm-rs"
 ]
