@@ -56,10 +56,12 @@ fn main() {
         .collect::<Vec<gbm_rs::def::SurfaceFormat>>();
 
     print_info!(
-        "supported_surface_formats: {:?}",
+        "supported_surface_formats: {}",
         supported_surface_format
             .into_iter()
-            .for_each(|format| print!("{:?} ", format))
+            .map(|format| format!("{:?} ", format))
+            .collect::<Vec<String>>()
+            .join(" ")
     );
 
     // let mut _context: egl_rs::Context = egl_rs::Context::new(
