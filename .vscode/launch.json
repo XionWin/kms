@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "type": "lldb",
+        //     "request": "custom",
+        //     "name": "Remote executable 'myapp'",
+        //     "preLaunchTask": "rust: remote ARM debug setup",
+        //     "targetCreateCommands": ["target create ${workspaceFolder}/target/armv7-unknown-linux-gnueabihf/debug/app"],
+        //     "processCreateCommands": ["gdb-multiarch 192.168.0.209:17777"]
+        // }
+
+        {
+            "name": "gcc build and debug active file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/target/armv7-unknown-linux-gnueabihf/debug/app",
+            "args": [""],
+            "preLaunchTask": "rust: remote ARM debug setup",
+            "cwd": "${workspaceRoot}/target/armv7-unknown-linux-gnueabihf/debug/",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb-multiarch",
+            "miDebuggerServerAddress": "192.168.0.209:17777",
+        }
+    ]
+}
