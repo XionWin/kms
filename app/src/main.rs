@@ -36,6 +36,8 @@ fn main() {
     });
 
     let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
+    let mode = drm.get_mode();
+    print_warning!("mode: {:#?}", mode);
 
     let gbm = gbm_rs::Gbm::new(
         fd,
@@ -44,7 +46,7 @@ fn main() {
         gbm_rs::def::SurfaceFormat::ARGB8888,
         vec![gbm_rs::def::FormatModifier::DRM_FORMAT_MOD_LINEAR],
     );
-    print_warning!("gbm: {:#?}", gbm);
+    // print_warning!("gbm: {:#?}", gbm);
 
     let supported_surface_format = gbm_rs::def::SurfaceFormat::iter()
         .into_iter()
