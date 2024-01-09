@@ -7,3 +7,6 @@
 [submodule "kernel/drm-rs"]
 	path = kernel/drm-rs
 	url = https://github.com/XionWin/drm-rs.git
+[submodule "kernel/gbm-rs"]
+	path = kernel/gbm-rs
+	url = https://www.github.com/xionwin/gbm-rs.git
