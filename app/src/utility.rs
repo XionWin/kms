@@ -15,7 +15,7 @@ pub fn get_default_video_card_info() -> Option<VideoCardInfo> {
         let card_path = String::from(os_path.to_str().unwrap());
 
         let fd = get_fd(&card_path);
-        println!("path: {:#?}, fd: {:#?}", card_path, fd);
+        print_debug!("path: {:#?}, fd: {:#?}", card_path, fd);
     
 
         let is_name_contains = x.as_ref().unwrap().file_name().to_str().unwrap().contains("card");

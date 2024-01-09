@@ -14,10 +14,10 @@ mod oflag;
 mod utility;
 
 fn main() {
-    print_debug!("====================[grid-rs]====================");
-    println!(
+    print_hight_light!("====================[grid-rs]====================");
+    print_info!(
         "supported_surface_formats: {}",
-        utility::pretty_print_system_time(SystemTime::now()).red()
+        utility::pretty_print_system_time(SystemTime::now()).green(),
         
         // colored_rs::Colorize::red(utility::pretty_print_system_time(SystemTime::now()))
     );
