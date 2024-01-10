@@ -85,7 +85,7 @@ fn main() {
         let (r, g, b) = rgb.into();
         gles_rs::clear_color(r as f32 / 255f32, g as f32 / 255f32, b as f32 / 255f32, 1f32);
 
-        gles_rs::clear(0x00004000);
+        gles_rs::clear(gles_rs::GL_COLOR_BUFFER_BIT);
         context.frame_vertical_synchronize(&mut gbm, &drm);
     }
 }
