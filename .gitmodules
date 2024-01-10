@@ -16,3 +16,6 @@
 [submodule "gles-rs"]
 	path = gles-rs
 	url = https://github.com/XionWin/gles-rs.git
+[submodule "color-rs"]
+	path = color-rs
+	url = https://github.com/XionWin/color-rs.git
