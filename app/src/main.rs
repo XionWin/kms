@@ -75,7 +75,6 @@ fn main() {
 
     context.initialize(&mut gbm, &drm);
 
-    
     gles_rs::viewport(0, 0, width, height);
     let first_tick = std::time::SystemTime::now();
     loop {
