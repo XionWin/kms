@@ -14,7 +14,7 @@ mod egl_context_outside_init;
 fn main() {
     print_hight_light!("====================[grid-rs]====================");
     print_info!(
-        "supported_surface_formats: {}",
+        "started_time: {}",
         utility::pretty_print_system_time(SystemTime::now()).green()
     );
     print_debug!(
