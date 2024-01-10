@@ -79,7 +79,7 @@ pub fn initialize(context: &egl_rs::Context, gbm: &mut gbm_rs::Gbm, drm: &drm_rs
     let display_handle = context.display;
     let surface_handle = context.surface;
 
-    let func = |display: *const libc::c_void, surface: *const libc::c_void| unsafe {
+    let func = |display: *const libc::c_void, surface: *const libc::c_void| {
         egl_rs::swap_buffers(display, surface)
     };
     surface.register_swap_callback((func, display_handle as _, surface_handle as _));
@@ -114,4 +114,3 @@ pub fn update(context: &mut egl_rs::Context, gbm: &mut gbm_rs::Gbm, drm: &drm_rs
         drm_rs::vertical_synchronization(fd, crtc_id, fb);
     }
 }
-
