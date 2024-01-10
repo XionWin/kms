@@ -75,7 +75,16 @@ fn main() {
 
     context.initialize(&mut gbm, &drm);
 
+    
+    gles_rs::viewport(0, 0, width, height);
     loop {
+        gles_rs::clear_color(1f32, 1f32, 0f32, 0.3f32);
+        // let angle = 0; //(std::time::SystemTime::now().duration_since(*first_tick).unwrap().as_millis() / 20 % 360) as u32;
+        // let hsv = drawing::color::HSV::new(angle as f32, 1.0f32, 0.2f32);
+        // let rgb: drawing::color::RGB = hsv.into();
+        // let (r, g, b) = rgb.into();
+
+        gles_rs::clear(0x00004000);
         context.frame_vertical_synchronize(&mut gbm, &drm);
     }
 }
