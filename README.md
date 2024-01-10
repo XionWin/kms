@@ -9,11 +9,11 @@ Library dependencies:
 
 ---
 ##### Tested on raspberry pi (Raspbian lite) with Waveshare AMOLED screen
-![image_01](https://github.com/XionWin/grid-rs/blob/main/resources/image_01.jpg?raw=true)
-![image_02](https://github.com/XionWin/grid-rs/blob/main/resources/image_02.jpg?raw=true)
+![image_01](https://github.com/XionWin/kms/main/resources/image_01.jpg?raw=true)
+![image_02](https://github.com/XionWin/kms/main/resources/image_02.jpg?raw=true)
 
 Resources usage is relatively low, and the C# version needs more 50-75% memory (load framework libs) than Rust; the CPU usage is up to 25% higher than the rust version. The result makes sense because the dynamic library executes the core business, and C# and Rust just played as the FFI caller, C# does is a doubling language.
-![image_03](https://github.com/XionWin/grid-rs/blob/main/resources/image_03.jpg?raw=true)
+![image_03](https://github.com/XionWin/kms/main/resources/image_03.jpg?raw=true)
 
 ---
-![DRM/KMS diagram](https://github.com/XionWin/grid-rs/blob/main/resources/Linux_graphics_drivers_DRI_Wayland.svg.png?raw=true)
+![DRM/KMS diagram](https://github.com/XionWin/kms/main/resources/Linux_graphics_drivers_DRI_Wayland.svg.png?raw=true)
