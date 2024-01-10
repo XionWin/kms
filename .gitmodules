@@ -1,6 +1,6 @@
 [submodule "colored-rs"]
 	path = colored-rs
-	url = https://www.github.com/xionwin/colored-rs.git
+	url = https://github.com/XionWin/colored-rs.git
 [submodule "logger-rs"]
 	path = logger-rs
 	url = https://github.com/XionWin/logger-rs.git
@@ -13,3 +13,6 @@
 [submodule "kernel/egl-rs"]
 	path = kernel/egl-rs
 	url = https://www.github.com/xionwin/egl-rs.git
+[submodule "gles-rs"]
+	path = gles-rs
+	url = https://github.com/XionWin/gles-rs.git
