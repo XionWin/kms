@@ -13,12 +13,12 @@ use std::time::SystemTime;
 use colored_rs::Colorize;
 
 fn main() {
-    print_hight_light!("====================[grid-rs]====================");
+    print_hight_light!("====================[KMS DEMO]====================");
     print_debug!(
         "started_time: {}",
         utility::pretty_print_system_time(SystemTime::now()).green()
     );
-    
+
     kms::begin_with(init_func, update_fun);
 }
 
