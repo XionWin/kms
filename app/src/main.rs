@@ -9,8 +9,17 @@ mod utility;
 mod egl_context_outside_init;
 mod kms;
 
+use std::time::SystemTime;
+use colored_rs::Colorize;
+
 fn main() {
-    kms::start(init_func, update_fun);
+    print_hight_light!("====================[grid-rs]====================");
+    print_debug!(
+        "started_time: {}",
+        utility::pretty_print_system_time(SystemTime::now()).green()
+    );
+    
+    kms::begin_with(init_func, update_fun);
 }
 
 fn init_func() {

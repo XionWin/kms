@@ -1,14 +1,7 @@
-use std::time::SystemTime;
 
-use colored_rs::Colorize;
 use crate::{egl_context_outside_init::EglContextOutsideInitTrait, utility};
 
-pub fn start<T1, T2>(init_func: T1, update_func: T2) where T1: Fn(), T2: Fn() {
-    print_hight_light!("====================[grid-rs]====================");
-    print_debug!(
-        "started_time: {}",
-        utility::pretty_print_system_time(SystemTime::now()).green()
-    );
+pub fn begin_with<T1, T2>(init_func: T1, update_func: T2) where T1: Fn(), T2: Fn() {
 
     let default_video_card_info = utility::get_default_video_card_info().unwrap();
     print_info!(
