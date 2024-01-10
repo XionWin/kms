@@ -13,13 +13,9 @@ mod egl_context_outside_init;
 
 fn main() {
     print_hight_light!("====================[grid-rs]====================");
-    print_info!(
+    print_debug!(
         "started_time: {}",
         utility::pretty_print_system_time(SystemTime::now()).green()
-    );
-    print_debug!(
-        "datetime: {}",
-        utility::pretty_print_system_time(SystemTime::now())
     );
 
     let default_video_card_info = utility::get_default_video_card_info().unwrap();
