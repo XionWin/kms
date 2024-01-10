@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 libc = "*"
 time = { version = "*", features = ["local-offset", "formatting", "macros"] }
+lazy_static = "*"
 color-rs = { path="../color-rs" }
 colored-rs = { path="../colored-rs" }
 drm-rs = { path="../kernel/drm-rs" }
