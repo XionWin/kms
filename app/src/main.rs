@@ -1,16 +1,13 @@
+use std::time::SystemTime;
+use colored_rs::Colorize;
+
 #[macro_use]
 extern crate lazy_static;
 #[macro_use]
 extern crate colored_rs;
 
-#[allow(dead_code)]
-mod oflag;
 mod utility;
-mod egl_context_outside_init;
-mod kms;
 
-use std::time::SystemTime;
-use colored_rs::Colorize;
 
 fn main() {
     print_hight_light!("====================[KMS DEMO]====================");
@@ -19,10 +16,11 @@ fn main() {
         utility::pretty_print_system_time(SystemTime::now()).green()
     );
 
-    kms::begin_with(init_func, update_fun);
+    kms_rs::begin_with(init_func, update_fun);
 }
 
-fn init_func() {
+fn init_func(width: libc::c_int, height: libc::c_int) {
+    gles_rs::viewport(0, 0, width, height);
 }
 
 lazy_static! {

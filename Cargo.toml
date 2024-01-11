@@ -7,5 +7,6 @@ members = [
     "kernel/drm-rs",
     "kernel/gbm-rs",
     "kernel/egl-rs",
+    "kernel/kms-rs",
     "gles-rs"
 ]
