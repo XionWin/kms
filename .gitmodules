@@ -22,3 +22,6 @@
 [submodule "kernel/kms-rs"]
 	path = kernel/kms-rs
 	url = https://github.com/XionWin/kms-rs.git
+[submodule "nvg-rs"]
+	path = nvg-rs
+	url = https://github.com/XionWin/nvg-rs.git
