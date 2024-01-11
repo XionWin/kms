@@ -19,3 +19,6 @@
 [submodule "color-rs"]
 	path = color-rs
 	url = https://github.com/XionWin/color-rs.git
+[submodule "kernel/kms-rs"]
+	path = kernel/kms-rs
+	url = https://github.com/XionWin/kms-rs.git
