@@ -19,14 +19,14 @@ fn main() {
     kms_rs::begin_with(init_func, update_fun);
 }
 
-fn init_func(width: libc::c_int, height: libc::c_int) {
-    gles_rs::viewport(0, 0, width, height);
+fn init_func(context: &kms_rs::Context) {
+    gles_rs::viewport(0, 0, context.get_width(), context.get_height());
 }
 
 lazy_static! {
     static ref STARTED_TICK: std::time::SystemTime = std::time::SystemTime::now();
 }
-fn update_fun() {
+fn update_fun(_context: &kms_rs::Context) {
     let started_tick = *STARTED_TICK;
     let angle = (std::time::SystemTime::now().duration_since(started_tick).unwrap().as_millis() / 20 % 360) as u32;
     let hsv = color_rs::HSV::new(angle as f32, 1f32, 0.5f32);
