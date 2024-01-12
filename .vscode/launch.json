@@ -9,7 +9,7 @@
         //     "request": "custom",
         //     "name": "Remote executable 'myapp'",
         //     "preLaunchTask": "rust: remote ARM debug setup",
-        //     "targetCreateCommands": ["target create ${workspaceFolder}/target/armv7-unknown-linux-gnueabihf/debug/app"],
+        //     "targetCreateCommands": ["target create ${workspaceFolder}/target/aarch64-unknown-linux-gnu/debug/app"],
         //     "processCreateCommands": ["gdb-multiarch 192.168.0.209:17777"]
         // }
 
@@ -17,10 +17,10 @@
             "name": "gcc build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/target/armv7-unknown-linux-gnueabihf/debug/app",
+            "program": "${workspaceRoot}/target/aarch64-unknown-linux-gnu/debug/app",
             "args": [""],
             "preLaunchTask": "rust: remote ARM debug setup",
-            "cwd": "${workspaceRoot}/target/armv7-unknown-linux-gnueabihf/debug/",
+            "cwd": "${workspaceRoot}/target/aarch64-unknown-linux-gnu/debug/",
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb-multiarch",
             "miDebuggerServerAddress": "192.168.0.209:17777",

@@ -6,7 +6,7 @@ GDBPORT="$3"
 
 PROJECT="kms"
 APP="app"
-TARGET_ARCH="armv7-unknown-linux-gnueabihf"
+TARGET_ARCH="aarch64-unknown-linux-gnu"
 BUILD_BIN_FILE="${VSCODE_WS}/target/${TARGET_ARCH}/debug/${APP}"
 TARGET_USER="pi"
 TARGET_BIN_FOLDER="/home/${TARGET_USER}/documents/bin/${PROJECT}"
