@@ -10,7 +10,7 @@
         //     "name": "Remote executable 'myapp'",
         //     "preLaunchTask": "rust: remote ARM debug setup",
         //     "targetCreateCommands": ["target create ${workspaceFolder}/target/aarch64-unknown-linux-gnu/debug/app"],
-        //     "processCreateCommands": ["gdb-multiarch 192.168.0.209:17777"]
+        //     "processCreateCommands": ["gdb-multiarch 192.168.1.102:17777"]
         // }
 
         {
@@ -23,7 +23,7 @@
             "cwd": "${workspaceRoot}/target/aarch64-unknown-linux-gnu/debug/",
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb-multiarch",
-            "miDebuggerServerAddress": "192.168.0.209:17777",
+            "miDebuggerServerAddress": "192.168.1.102:17777",
         }
     ]
 }
