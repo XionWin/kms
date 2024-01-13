@@ -8,7 +8,6 @@ edition = "2021"
 [dependencies]
 libc = "*"
 time = { version = "*", features = ["local-offset", "formatting", "macros"] }
-once_cell = "*"
 color-rs = { path="../color-rs" }
 colored-rs = { path="../colored-rs" }
 drm-rs = { path="../kernel/drm-rs" }
@@ -16,3 +15,4 @@ gbm-rs = { path="../kernel/gbm-rs" }
 egl-rs = { path="../kernel/egl-rs" }
 kms-rs = { path="../kernel/kms-rs" }
 gles-rs = { path="../gles-rs" }
+nvg-rs = { path="../nvg-rs" }
