@@ -24,7 +24,7 @@ fn main() {
 pub fn init(kms: &mut kms_rs::KMS) -> nvg_rs::Graphic {
     colored_rs::print_debug!("gl_extensions: {:?}", gles_rs::get_string(gles_rs::StringName::Extensions));
     colored_rs::print_debug!("gl_version: {:?}", gles_rs::get_string(gles_rs::StringName::Version));
-    colored_rs::print_debug!("gl_sharding Language Version: {:?}", gles_rs::get_string(gles_rs::StringName::ShadingLanguageVersion));
+    colored_rs::print_debug!("gl_sharding_language_version: {:?}", gles_rs::get_string(gles_rs::StringName::ShadingLanguageVersion));
     colored_rs::print_debug!("gl_vendor: {:?}", gles_rs::get_string(gles_rs::StringName::Vendor));
     colored_rs::print_debug!("gl_renderer: {:?}", gles_rs::get_string(gles_rs::StringName::Renderer));
     kms.init_double_buffer();
