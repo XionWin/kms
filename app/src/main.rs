@@ -20,24 +20,17 @@ fn main() {
     begin_render!(init, update, &mut kms);
 }
 
-
 pub fn init(kms: &mut kms_rs::KMS) -> nvg_rs::Graphic {
     colored_rs::print_debug!("gl_extensions: {:?}", gles_rs::get_string(gles_rs::StringName::Extensions));
     colored_rs::print_debug!("gl_version: {:?}", gles_rs::get_string(gles_rs::StringName::Version));
     colored_rs::print_debug!("gl_sharding_language_version: {:?}", gles_rs::get_string(gles_rs::StringName::ShadingLanguageVersion));
     colored_rs::print_debug!("gl_vendor: {:?}", gles_rs::get_string(gles_rs::StringName::Vendor));
     colored_rs::print_debug!("gl_renderer: {:?}", gles_rs::get_string(gles_rs::StringName::Renderer));
-    kms.init_double_buffer();
-    let width = kms.get_width();
-    let height = kms.get_height();
-    let graphic = nvg_rs::Graphic::new(width, height);
+    let graphic = nvg_rs::Graphic::new(kms.get_width(), kms.get_height());
     nvg_rs::init(&graphic);
     graphic
 }
 
-pub fn update(kms: &mut kms_rs::KMS, graphic: &mut nvg_rs::Graphic) {
+pub fn update(_kms: &mut kms_rs::KMS, graphic: &mut nvg_rs::Graphic) {
     nvg_rs::update(graphic);
-    kms.wait_vertical_synchronize();
 }
-
-
