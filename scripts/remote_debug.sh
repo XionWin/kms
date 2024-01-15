@@ -8,6 +8,7 @@ PROJECT="kms"
 APP="app"
 TARGET_ARCH="aarch64-unknown-linux-gnu"
 BUILD_BIN_FILE="${VSCODE_WS}/target/${TARGET_ARCH}/debug/${APP}"
+SHADER_FOLDER="${VSCODE_WS}/nvg-rs/shaders"
 TARGET_USER="pi"
 TARGET_BIN_FOLDER="/home/${TARGET_USER}/documents/bin/${PROJECT}"
 TARGET_BIN_FILE="${TARGET_BIN_FOLDER}/${APP}"
@@ -17,6 +18,13 @@ ssh "${TARGET_USER}@${SSH_REMOTE}" "killall gdbserver ${APP}"
 if ! rsync -avz "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FILE}"; then
     # If rsync doesn't work, it may not be available on target. Fallback to trying SSH copy.
     if ! scp "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FILE}"; then
+        exit 2
+    fi
+fi
+
+if ! rsync -avz "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FOLDER}"; then
+    # If rsync doesn't work, it may not be available on target. Fallback to trying SSH copy.
+    if ! scp -r "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FOLDER}"; then
         exit 2
     fi
 fi
