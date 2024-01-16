@@ -12,9 +12,11 @@ SHADER_FOLDER="${VSCODE_WS}/nvg-rs/shaders"
 TARGET_USER="pi"
 TARGET_BIN_FOLDER="/home/${TARGET_USER}/documents/bin/${PROJECT}"
 TARGET_BIN_FILE="${TARGET_BIN_FOLDER}/${APP}"
+TARGET_RESOURCES_FOLDER="${TARGET_BIN_FOLDER}/resources"
 
 ssh "${TARGET_USER}@${SSH_REMOTE}" "killall gdbserver ${APP}"
 
+# Copy bin file
 if ! rsync -avz "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FILE}"; then
     # If rsync doesn't work, it may not be available on target. Fallback to trying SSH copy.
     if ! scp "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FILE}"; then
@@ -22,9 +24,10 @@ if ! rsync -avz "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_F
     fi
 fi
 
-if ! rsync -avz "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FOLDER}"; then
+# Copy shader folder into resources folder
+if ! rsync -avzr "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_RESOURCES_FOLDER}"; then
     # If rsync doesn't work, it may not be available on target. Fallback to trying SSH copy.
-    if ! scp -r "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FOLDER}"; then
+    if ! scp -r "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_RESOURCES_FOLDER}"; then
         exit 2
     fi
 fi
