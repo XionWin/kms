@@ -62,14 +62,8 @@ pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<String>) {
         .duration_since(started_tick)
         .unwrap()
         .as_millis() as f64 / 3000f64 % 1f64;
-    let hsv = color_rs::HSV::new(angle as f32, 1f32, 0.75f32);
-    let rgb: color_rs::RGB = hsv.into();
-    let (r, g, b) = rgb.into();
-    gles_rs::clear_color(
-        r as f32 / 255f32,
-        g as f32 / 255f32,
-        b as f32 / 255f32,
-        1f32,
-    );
+    let hsv = nvg_rs::Color::hsl(angle as f32, 1f32, 0.75f32);
+    let (r, g, b, a) = hsv.into();
+    gles_rs::clear_color(r, g, b, a);
     gles_rs::clear(gles_rs::GL_COLOR_BUFFER_BIT);
 }
