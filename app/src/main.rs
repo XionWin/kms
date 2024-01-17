@@ -58,11 +58,11 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<String> {
 static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
 pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<String>) {
     let started_tick = STARTED_TICK.to_owned();
-    let angle = std::time::SystemTime::now()
+    let h = std::time::SystemTime::now()
         .duration_since(started_tick)
         .unwrap()
         .as_millis() as f64 / 3000f64 % 1f64;
-    let hsv = nvg_rs::Color::hsl(angle as f32, 1f32, 0.75f32);
+    let hsv = nvg_rs::Color::hsl(h as _, 1.0, 0.35);
     let (r, g, b, a) = hsv.into();
     gles_rs::clear_color(r, g, b, a);
     gles_rs::clear(gles_rs::GL_COLOR_BUFFER_BIT);
