@@ -64,7 +64,7 @@ pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<String>) {
         .as_millis() as f64
         / 3000f64
         % 1f64;
-    let hsv = nvg_rs::Color::hsl(h as _, 1.0, 0.35);
+    let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
     let (r, g, b, a) = hsv.into();
     gles_rs::clear_color(r, g, b, a);
     gles_rs::clear(gles_rs::GL_COLOR_BUFFER_BIT);

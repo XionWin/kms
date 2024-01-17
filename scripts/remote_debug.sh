@@ -10,11 +10,12 @@ TARGET_ARCH="aarch64-unknown-linux-gnu"
 BUILD_BIN_FILE="${VSCODE_WS}/target/${TARGET_ARCH}/debug/${APP}"
 SHADER_FOLDER="${VSCODE_WS}/nvg-rs/shaders"
 TARGET_USER="pi"
+ROOT_USER="root"
 TARGET_BIN_FOLDER="/home/${TARGET_USER}/documents/bin/${PROJECT}"
 TARGET_BIN_FILE="${TARGET_BIN_FOLDER}/${APP}"
 TARGET_RESOURCES_FOLDER="${TARGET_BIN_FOLDER}/resources"
 
-ssh "${TARGET_USER}@${SSH_REMOTE}" "killall -9 gdbserver"
+ssh "${ROOT_USER}@${SSH_REMOTE}" "killall -9 gdbserver"
 
 # Copy bin file
 if ! rsync -avz "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FILE}"; then
@@ -35,4 +36,4 @@ fi
 # ssh -f "${TARGET_USER}@${SSH_REMOTE}" "sh -c 'cd ${TARGET_BIN_FOLDER}; nohup gdbserver *:${GDBPORT} ${TARGET_BIN_FILE} > /dev/null 2>&1 &'"
 
 # send print text into tty1, we need root permission to do this
-ssh -f "root@${SSH_REMOTE}" "sh -c 'cd ${TARGET_BIN_FOLDER}; gdbserver *:${GDBPORT} ${TARGET_BIN_FILE} > /dev/tty1'"
+ssh -f "${ROOT_USER}@${SSH_REMOTE}" "sh -c 'cd ${TARGET_BIN_FOLDER}; gdbserver *:${GDBPORT} ${TARGET_BIN_FILE} > /dev/tty1'"
