@@ -14,7 +14,7 @@ TARGET_BIN_FOLDER="/home/${TARGET_USER}/documents/bin/${PROJECT}"
 TARGET_BIN_FILE="${TARGET_BIN_FOLDER}/${APP}"
 TARGET_RESOURCES_FOLDER="${TARGET_BIN_FOLDER}/resources"
 
-ssh "${TARGET_USER}@${SSH_REMOTE}" "killall gdbserver ${APP}"
+ssh "${TARGET_USER}@${SSH_REMOTE}" "killall -9 gdbserver"
 
 # Copy bin file
 if ! rsync -avz "${BUILD_BIN_FILE}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_BIN_FILE}"; then

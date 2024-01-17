@@ -44,15 +44,15 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<String> {
         "gl_renderer: {:?}",
         gles_rs::get_string(gles_rs::StringName::Renderer)
     );
-    let graphic = Graphic::new(kms.get_width(), kms.get_height(), String::from("tag"));
 
-    let program = gles_rs::GfxProgram::new(
+    gles_rs::GfxProgram::new(
         "resources/shaders/nvgv2.vert",
         "resources/shaders/nvgv2.frag",
-    );
-    program.active();
-    gles_rs::viewport(0, 0, graphic.get_width(), graphic.get_height());
-    graphic
+    )
+    .active();
+
+    gles_rs::viewport(0, 0, kms.get_width(), kms.get_height());
+    Graphic::new(kms.get_width(), kms.get_height(), String::from("tag"))
 }
 
 static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
@@ -61,7 +61,9 @@ pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<String>) {
     let h = std::time::SystemTime::now()
         .duration_since(started_tick)
         .unwrap()
-        .as_millis() as f64 / 3000f64 % 1f64;
+        .as_millis() as f64
+        / 3000f64
+        % 1f64;
     let hsv = nvg_rs::Color::hsl(h as _, 1.0, 0.35);
     let (r, g, b, a) = hsv.into();
     gles_rs::clear_color(r, g, b, a);
