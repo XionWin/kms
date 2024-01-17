@@ -17,7 +17,7 @@ fn main() {
         utility::pretty_print_system_time(SystemTime::now()).green()
     );
 
-    // nvg_rs::test_func();
+    nvg_rs::test_func();
 
     let mut kms = kms_rs::KMS::new(Some("/dev/dri/card0"), kms_rs::SurfaceType::OpenGlesV2);
     begin_render!(init, update, &mut kms);
