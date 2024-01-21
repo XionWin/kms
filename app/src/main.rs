@@ -1,5 +1,5 @@
 use nvg_rs::context::Vertex;
-use once_cell::sync::Lazy;
+// use once_cell::sync::Lazy;
 use std::time::SystemTime;
 
 #[macro_use]
@@ -100,22 +100,25 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<String> {
   
     gles_rs::uniform2f(&program, "uViewSize", kms.get_width() as _, kms.get_height() as _);
     gles_rs::viewport(0, 0, kms.get_width(), kms.get_height());
+    
+    let (r, g, b, a) = nvg_rs::color::Color::rgb_i(25, 25, 112).into();
+    gles_rs::clear_color(r, g, b, a);
+
     Graphic::new(kms.get_width(), kms.get_height(), String::from("tag"))
 }
 
-static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
+// static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
 pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<String>) {
-    let started_tick = STARTED_TICK.to_owned();
-    let h = std::time::SystemTime::now()
-        .duration_since(started_tick)
-        .unwrap()
-        .as_millis() as f64
-        / 3000f64
-        % 1f64;
-    let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
-    let (r, g, b, a) = hsv.into();
-    gles_rs::clear_color(r, g, b, a);
-    gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT | gles_rs::ffi::GL_DEPTH_BUFFER_BIT);
+    // let started_tick = STARTED_TICK.to_owned();
+    // let h = std::time::SystemTime::now()
+    //     .duration_since(started_tick)
+    //     .unwrap()
+    //     .as_millis() as f64
+    //     / 3000f64
+    //     % 1f64;
+    // let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
+    // let (r, g, b, a) = hsv.into();
+    gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT);
 
     gles_rs::bind_vertex_array(1);
     gles_rs::draw_arrays(gles_rs::def::BeginMode::Triangles, 0, 3);
