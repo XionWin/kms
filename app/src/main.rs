@@ -53,22 +53,16 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<String> {
 
     gles_rs::uniform2f(&program, "uViewSize", kms.get_width() as _, kms.get_height() as _);
 
-    // let vertexes = vec![
-    //     Vertex::new(0.0, 0.5, 0.0, 0.0),
-    //     Vertex::new(-0.5, -0.5, 0.0, 0.0),
-    //     Vertex::new(0.5, -0.5, 0.0, 0.0)
-    // ];
-
-    // let vVertices: [gles_rs::GLfloat; 6] = [
-    //     0.0, 0.5,
-    //     -0.5, -0.5,
-    //     0.5, -0.5
-    // ];
-    // let indices = vec![
-    //     0, 1, 2
-    // ];
+    let vertexes = vec![
+        Vertex::new(0.0, 0.5, 0.0, 0.0),
+        Vertex::new(-0.5, -0.5, 0.0, 0.0),
+        Vertex::new(0.5, -0.5, 0.0, 0.0)
+    ];
+    let indices = vec![
+        0, 1, 2
+    ];
     
-    // let vbos = gles_rs::gen_buffers(1);
+    let vbos = gles_rs::gen_buffers(2);
     // gles_rs::bind_buffer(gles_rs::GL_ARRAY_BUFFER, vbos[0]);
     // gles_rs::buffer_data(
     //     gles_rs::GL_ARRAY_BUFFER,
