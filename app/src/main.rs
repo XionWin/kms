@@ -127,7 +127,7 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
 }
 
 // static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
-pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<GfxProgram>) {
+pub fn update(_kms: &mut kms_rs::KMS, graphic: &mut Graphic<GfxProgram>) {
     // let started_tick = STARTED_TICK.to_owned();
     // let h = std::time::SystemTime::now()
     //     .duration_since(started_tick)
@@ -141,7 +141,7 @@ pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<GfxProgram>) {
 
     gles_rs::bind_vertex_array(1);
     
-    gles_rs::uniform_1i(1, 0);
+    gles_rs::uniform_1i(gles_rs::get_uniform_location(graphic.get_tag(), "uTexture"), 0);
 
     gles_rs::draw_elements::<u32>(gles_rs::def::BeginMode::Triangles, 6, gles_rs::def::DrawElementsType::UnsignedInt, None);
 }
