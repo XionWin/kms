@@ -26,23 +26,23 @@ fn main() {
 pub fn init(kms: &mut kms_rs::KMS) -> Graphic<String> {
     colored_rs::print_debug!(
         "gl_extensions: {:?}",
-        gles_rs::get_string(gles_rs::StringName::Extensions)
+        gles_rs::get_string(gles_rs::def::StringName::Extensions)
     );
     colored_rs::print_debug!(
         "gl_version: {:?}",
-        gles_rs::get_string(gles_rs::StringName::Version)
+        gles_rs::get_string(gles_rs::def::StringName::Version)
     );
     colored_rs::print_debug!(
         "gl_sharding_language_version: {:?}",
-        gles_rs::get_string(gles_rs::StringName::ShadingLanguageVersion)
+        gles_rs::get_string(gles_rs::def::StringName::ShadingLanguageVersion)
     );
     colored_rs::print_debug!(
         "gl_vendor: {:?}",
-        gles_rs::get_string(gles_rs::StringName::Vendor)
+        gles_rs::get_string(gles_rs::def::StringName::Vendor)
     );
     colored_rs::print_debug!(
         "gl_renderer: {:?}",
-        gles_rs::get_string(gles_rs::StringName::Renderer)
+        gles_rs::get_string(gles_rs::def::StringName::Renderer)
     );
 
     let program = gles_rs::GfxProgram::new(
@@ -51,8 +51,7 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<String> {
     );
     program.active();
 
-    let uniform_view_size = gles_rs::get_uniform_location(program.get_id(), "uViewSize");
-    gles_rs::uniform2f(uniform_view_size, kms.get_width() as _, kms.get_height() as _);
+    gles_rs::uniform2f(&program, "uViewSize", kms.get_width() as _, kms.get_height() as _);
 
     // let vertexes = vec![
     //     Vertex::new(0.0, 0.5, 0.0, 0.0),
@@ -110,7 +109,7 @@ pub fn update(_kms: &mut kms_rs::KMS, _graphic: &mut Graphic<String>) {
     let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
     let (r, g, b, a) = hsv.into();
     gles_rs::clear_color(r, g, b, a);
-    gles_rs::clear(gles_rs::GL_COLOR_BUFFER_BIT);
+    gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT);
 
     // gles_rs::enable_vertex_attrib_array(0);
     // gles_rs::draw_arrays(gles_rs::GL_TRIANGLES, 0, 3);
