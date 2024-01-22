@@ -9,6 +9,7 @@ APP="app"
 TARGET_ARCH="aarch64-unknown-linux-gnu"
 BUILD_BIN_FILE="${VSCODE_WS}/target/${TARGET_ARCH}/debug/${APP}"
 SHADER_FOLDER="${VSCODE_WS}/app/shaders"
+IMAGES_FOLDER="${VSCODE_WS}/app/images"
 TARGET_USER="pi"
 ROOT_USER="root"
 TARGET_BIN_FOLDER="/home/${TARGET_USER}/documents/bin/${PROJECT}"
@@ -29,6 +30,14 @@ fi
 if ! rsync -avzr "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_RESOURCES_FOLDER}"; then
     # If rsync doesn't work, it may not be available on target. Fallback to trying SSH copy.
     if ! scp -r "${SHADER_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_RESOURCES_FOLDER}"; then
+        exit 2
+    fi
+fi
+
+# Copy images folder into resources folder
+if ! rsync -avzr "${IMAGES_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_RESOURCES_FOLDER}"; then
+    # If rsync doesn't work, it may not be available on target. Fallback to trying SSH copy.
+    if ! scp -r "${IMAGES_FOLDER}" "${TARGET_USER}@${SSH_REMOTE}:${TARGET_RESOURCES_FOLDER}"; then
         exit 2
     fi
 fi

@@ -1,6 +1,7 @@
 use gles_rs::GfxProgram;
+use image::GenericImageView;
 use nvg_rs::context::Vertex;
-// use once_cell::sync::Lazy;
+use once_cell::sync::Lazy;
 use std::time::SystemTime;
 
 #[macro_use]
@@ -52,11 +53,16 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     );
     program.active();
 
+    let image = image::io::Reader::open("resources/images/bg.png").unwrap().decode().unwrap();
+    let (width, height) = (kms.get_width() as f32, kms.get_height() as f32);
+    let (image_width, image_height) = (image.width() as f32, image.height() as f32);
+    let (x, y, w, h) = ((width - image_width) / 2.0, (height - image_height) / 2.0, image_width, image_height);
+
     let vertexes = vec![
-        Vertex::new(100.0, 100.0, 0.0, 0.0),
-        Vertex::new(300.0, 300.0, 1.0, 1.0),
-        Vertex::new(100.0, 300.0, 0.0, 1.0),
-        Vertex::new(300.0, 100.0, 1.0, 0.0)
+        Vertex::new(x, y, 0.0, 0.0),
+        Vertex::new(x + w, y + h, 1.0, 1.0),
+        Vertex::new(x, y + h, 0.0, 1.0),
+        Vertex::new(x + w, y, 1.0, 0.0)
     ];
     let indices: Vec<u32> = vec![
         0, 1, 2,
@@ -100,17 +106,16 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
         std::mem::size_of::<Vertex>() as _, 
         (std::mem::size_of::<f32>() * 2) as _);
 
+   
+    
     gles_rs::uniform_1i(gles_rs::get_uniform_location(&program, "uTexture"), 0);
     let texture = gles_rs::GfxTexture::new(gles_rs::def::TextureUnit::Texture0, gles_rs::def::TextureMinFilter::Nearest);
+    
+    let image_data = image.to_rgba().into_vec();
     let image_data = gles_rs::ImageData {
-        width: 2,
-        height: 2,
-        value: vec![
-            255u8, 0u8, 0u8, 255u8,
-            0u8, 0u8, 255u8, 255u8,
-            0u8, 255u8, 0u8, 255u8,
-            255u8, 255u8, 0u8, 255u8,
-        ]
+        width: image_width as _,
+        height: image_height as _,
+        value: image_data
     };
     texture.load(&image_data);
     program.add_texture(texture);
@@ -126,20 +131,24 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     Graphic::new(kms.get_width(), kms.get_height(), program)
 }
 
-// static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
+static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
 pub fn update(_kms: &mut kms_rs::KMS, graphic: &mut Graphic<GfxProgram>) {
-    // let started_tick = STARTED_TICK.to_owned();
-    // let h = std::time::SystemTime::now()
-    //     .duration_since(started_tick)
-    //     .unwrap()
-    //     .as_millis() as f64
-    //     / 3000f64
-    //     % 1f64;
-    // let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
-    // let (r, g, b, a) = hsv.into();
+    let started_tick = STARTED_TICK.to_owned();
+    let h = std::time::SystemTime::now()
+        .duration_since(started_tick)
+        .unwrap()
+        .as_millis() as f64
+        / 10_000f64
+        % 1f64;
+    let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
+    let (r, g, b, a) = hsv.into();
+    gles_rs::clear_color(r, g, b, a);
     gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT | gles_rs::ffi::GL_DEPTH_BUFFER_BIT);
 
     gles_rs::bind_vertex_array(1);
+    // Enable Alpha
+    gles_rs::enable(gles_rs::def::EnableCap::Blend);
+    gles_rs::blend_func(gles_rs::def::BlendingFactor::SrcAlpha, gles_rs::def::BlendingFactor::OneMinusSrcAlpha);
     
     gles_rs::uniform_1i(gles_rs::get_uniform_location(graphic.get_tag(), "uTexture"), 0);
 
