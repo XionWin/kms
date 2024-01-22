@@ -119,8 +119,6 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     };
     texture.load(&image_data);
     program.add_texture(texture);
-    
-
 
     gles_rs::uniform2f(gles_rs::get_uniform_location(&program, "uViewSize"), kms.get_width() as _, kms.get_height() as _);
     gles_rs::viewport(0, 0, kms.get_width(), kms.get_height());
