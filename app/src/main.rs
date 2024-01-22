@@ -11,7 +11,7 @@ use kms_rs::Graphic;
 mod utility;
 mod renderer;
 mod shape;
-mod nvg_test;
+mod pencil_test;
 
 pub use shape::*;
 
@@ -60,6 +60,12 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     let (r, g, b, a) = nvg_rs::color::Color::rgb_i(25, 25, 112).into();
     gles_rs::clear_color(r, g, b, a);
 
+    // let renderer = nvg_gl_rs::Renderer::create().unwrap();
+    // let context = nvg_rs::context::Context::create(renderer).unwrap();
+
+    pencil_test::pencil_test();
+
+
     let mut graphic = Graphic::new(kms.get_width(), kms.get_height(), program);
     renderer::init(&mut graphic);
     graphic
@@ -67,4 +73,15 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
 
 pub fn update(_kms: &mut kms_rs::KMS, graphic: &mut Graphic<GfxProgram>) {
     renderer::update(graphic);
+
+    // let context = graphic.get_tag_mut();
+    // context.begin_path();
+    // context.rect((100.0, 100.0, 300.0, 300.0));
+    // context.fill_paint(nvg_rs::context::Gradient::Linear {
+    //     start: (100, 100).into(),
+    //     end: (400, 400).into(),
+    //     start_color: nvg_rs::color::Color::rgb_i(0xAA, 0x6C, 0x39),
+    //     end_color: nvg_rs::color::Color::rgb_i(0x88, 0x2D, 0x60),
+    // });
+    // let _ = context.fill();
 }

@@ -73,6 +73,7 @@ impl Shader {
     }
 }
 
+#[allow(dead_code)]
 enum ShaderType {
     FillGradient,
     FillImage,
@@ -166,7 +167,6 @@ pub struct Renderer {
     vert_buf: gles_rs::ffi::GLuint,
     vert_arr: gles_rs::ffi::GLuint,
     frag_buf: gles_rs::ffi::GLuint,
-    frag_size: usize,
     calls: Vec<Call>,
     paths: Vec<GLPath>,
     vertexes: Vec<Vertex>,
@@ -194,11 +194,8 @@ impl Renderer {
             // gl::UniformBlockBinding(shader.prog, shader.loc_frag, 0);
             let frag_buf = gles_rs::gen_buffer();
 
-            let align: usize = std::mem::zeroed();
+            // let align: usize = std::mem::zeroed();
             // gl::GetIntegerv(gles_rs::ffi::GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &mut align);
-
-            let frag_size = std::mem::size_of::<FragUniforms>() + (align as usize)
-                - std::mem::size_of::<FragUniforms>() % (align as usize);
 
             gles_rs::finish();
 
@@ -209,7 +206,6 @@ impl Renderer {
                 vert_buf,
                 vert_arr,
                 frag_buf,
-                frag_size,
                 calls: Default::default(),
                 paths: Default::default(),
                 vertexes: Default::default(),
@@ -468,15 +464,6 @@ impl Renderer {
         frag
     }
 
-    fn append_uniforms(&mut self, uniforms: FragUniforms) {
-        self.uniforms
-            .resize(self.uniforms.len() + self.frag_size, 0);
-        unsafe {
-            let idx = self.uniforms.len() - self.frag_size;
-            let p = self.uniforms.as_mut_ptr().add(idx) as *mut FragUniforms;
-            *p = uniforms;
-        }
-    }
 }
 
 impl renderer::Renderer for Renderer {
@@ -632,7 +619,7 @@ impl renderer::Renderer for Renderer {
         &mut self,
         img: ImageId,
         x: usize,
-        y: usize,
+        y: usize, 
         width: usize,
         height: usize,
         data: &[u8],
@@ -793,6 +780,7 @@ impl renderer::Renderer for Renderer {
         // Ok(())
     }
 
+    #[allow(unused_variables)]
     fn fill(
         &mut self,
         paint: &Paint,
@@ -856,22 +844,14 @@ impl renderer::Renderer for Renderer {
             self.vertexes
                 .push(Vertex::new(bounds.min.x, bounds.min.y, 0.5, 1.0));
 
-            call.uniform_offset = self.uniforms.len() / self.frag_size;
-            self.append_uniforms(FragUniforms {
-                stroke_thr: -1.0,
-                type_: ShaderType::Simple as i32,
-                ..FragUniforms::default()
-            });
-            self.append_uniforms(self.convert_paint(paint, scissor, fringe, fringe, -1.0));
         } else {
-            call.uniform_offset = self.uniforms.len() / self.frag_size;
-            self.append_uniforms(self.convert_paint(paint, scissor, fringe, fringe, -1.0));
         }
 
         self.calls.push(call);
         Ok(())
     }
 
+    #[allow(unused_variables)]
     fn stroke(
         &mut self,
         paint: &Paint,
@@ -881,7 +861,7 @@ impl renderer::Renderer for Renderer {
         stroke_width: f32,
         paths: &[Path],
     ) -> anyhow::Result<()> {
-        let mut call = Call {
+        let call = Call {
             call_type: CallType::Stroke,
             image: paint.image,
             path_offset: self.paths.len(),
@@ -911,16 +891,6 @@ impl renderer::Renderer for Renderer {
             }
         }
 
-        call.uniform_offset = self.uniforms.len() / self.frag_size;
-        self.append_uniforms(self.convert_paint(paint, scissor, stroke_width, fringe, -1.0));
-        self.append_uniforms(self.convert_paint(
-            paint,
-            scissor,
-            stroke_width,
-            fringe,
-            1.0 - 0.5 / 255.0,
-        ));
-
         self.calls.push(call);
         Ok(())
     }
@@ -939,7 +909,7 @@ impl renderer::Renderer for Renderer {
             path_count: 0,
             triangle_offset: self.vertexes.len(),
             triangle_count: vertexes.len(),
-            uniform_offset: self.uniforms.len() / self.frag_size,
+            uniform_offset: self.uniforms.len(),
             blend_func: composite_operation.into(),
         };
 
@@ -948,7 +918,6 @@ impl renderer::Renderer for Renderer {
 
         let mut uniforms = self.convert_paint(paint, scissor, 1.0, 1.0, -1.0);
         uniforms.type_ = ShaderType::Image as i32;
-        self.append_uniforms(uniforms);
         Ok(())
     }
 }

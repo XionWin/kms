@@ -17,3 +17,5 @@ egl-rs = { path="../kernel/egl-rs" }
 kms-rs = { path="../kernel/kms-rs" }
 gles-rs = { path="../gles-rs" }
 nvg-rs = { path="../nvg-rs" }
+nvg-gl-rs = { path="../nvg-gl-rs" }
+pencil-rs = { path="../pencil-rs" }
