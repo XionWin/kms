@@ -11,6 +11,8 @@ use kms_rs::Graphic;
 mod utility;
 mod renderer;
 mod shape;
+mod nvg_test;
+
 pub use shape::*;
 
 fn main() {

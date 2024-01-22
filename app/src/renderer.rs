@@ -1,5 +1,4 @@
 use gles_rs::GfxProgram;
-use image::GenericImageView;
 use kms_rs::Graphic;
 use nvg_rs::context::Vertex;
 use once_cell::sync::Lazy;
@@ -64,7 +63,7 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
     gles_rs::uniform_1i(gles_rs::get_uniform_location(program.get_id(), "uTexture"), 0);
     let texture = gles_rs::GfxTexture::new(gles_rs::def::TextureUnit::Texture0, gles_rs::def::TextureMinFilter::Nearest);
     
-    let image_data = image.to_rgba().into_vec();
+    let image_data = image.to_rgba8().into_vec();
     let image_data = gles_rs::ImageData {
         width: image_width as _,
         height: image_height as _,
