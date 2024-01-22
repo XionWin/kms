@@ -8,5 +8,6 @@ members = [
     "kernel/egl-rs",
     "kernel/kms-rs",
     "gles-rs",
-    "nvg-rs"
+    "nvg-rs",
+    "nvg-gl-rs"
 ]

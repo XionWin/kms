@@ -10,6 +10,8 @@ use colored_rs::Colorize;
 use kms_rs::Graphic;
 mod utility;
 mod renderer;
+mod shape;
+pub use shape::*;
 
 fn main() {
     print_hight_light!("====================[KMS DEMO]====================");
@@ -50,7 +52,7 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     );
     program.active();
 
-    gles_rs::uniform2f(gles_rs::get_uniform_location(&program, "uViewSize"), kms.get_width() as _, kms.get_height() as _);
+    gles_rs::uniform2f(gles_rs::get_uniform_location(program.get_id(), "uViewSize"), kms.get_width() as _, kms.get_height() as _);
     gles_rs::viewport(0, 0, kms.get_width(), kms.get_height());
     
     let (r, g, b, a) = nvg_rs::color::Color::rgb_i(25, 25, 112).into();

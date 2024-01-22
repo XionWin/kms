@@ -22,7 +22,6 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
         0, 1, 2,
         0, 3, 1
     ];
-
     
     let mut vao = 0u32;
     gles_rs::gen_vertex_arrays(1, &mut vao);
@@ -62,7 +61,7 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
 
    
     
-    gles_rs::uniform_1i(gles_rs::get_uniform_location(&program, "uTexture"), 0);
+    gles_rs::uniform_1i(gles_rs::get_uniform_location(program.get_id(), "uTexture"), 0);
     let texture = gles_rs::GfxTexture::new(gles_rs::def::TextureUnit::Texture0, gles_rs::def::TextureMinFilter::Nearest);
     
     let image_data = image.to_rgba().into_vec();
@@ -95,7 +94,7 @@ pub fn update(graphic: &mut Graphic<GfxProgram>) {
     gles_rs::enable(gles_rs::def::EnableCap::Blend);
     gles_rs::blend_func(gles_rs::def::BlendingFactor::SrcAlpha, gles_rs::def::BlendingFactor::OneMinusSrcAlpha);
     
-    gles_rs::uniform_1i(gles_rs::get_uniform_location(graphic.get_tag(), "uTexture"), 0);
+    gles_rs::uniform_1i(gles_rs::get_uniform_location(graphic.get_tag().get_id(), "uTexture"), 0);
 
     gles_rs::draw_elements::<u32>(gles_rs::def::BeginMode::Triangles, 6, gles_rs::def::DrawElementsType::UnsignedInt, None);
 }
