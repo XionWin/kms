@@ -66,6 +66,7 @@ impl PathCache {
         }
     }
 
+    #[allow(dead_code)]
     unsafe fn alloc_vertexes(&mut self, count: usize) -> *mut Vertex {
         self.vertexes.resize(count, Default::default());
         if self.vertexes.is_empty() {
