@@ -16,4 +16,3 @@ Resources usage is relatively low, and the C# version needs more 50-75% memory (
 ![image_03](https://github.com/XionWin/kms/blob/main/resources/image_03.jpg?raw=true)
 
 ---
-![DRM/KMS diagram](https://github.com/XionWin/kms/blob/main/resources/Linux_graphics_drivers_DRI_Wayland.svg.png?raw=true)
