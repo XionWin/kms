@@ -1,0 +1,21 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "*"
+once_cell = "*"
+time = { version = "*", features = ["local-offset", "formatting", "macros"] }
+image = "*"
+colored-rs = { path="../colored-rs" }
+drm-rs = { path="../kernel/drm-rs" }
+gbm-rs = { path="../kernel/gbm-rs" }
+egl-rs = { path="../kernel/egl-rs" }
+kms-rs = { path="../kernel/kms-rs" }
+gles-rs = { path="../gles-rs" }
+nvg-rs = { path="../nvg-rs" }
+nvg-gl-rs = { path="../nvg-gl-rs" }
+pencil-rs = { path="../pencil-rs" }

@@ -1,0 +1,14 @@
+[workspace]
+resolver = "1"
+members = [ 
+    "app",
+    "colored-rs",
+    "kernel/drm-rs",
+    "kernel/gbm-rs",
+    "kernel/egl-rs",
+    "kernel/kms-rs",
+    "gles-rs",
+    "nvg-rs",
+    "nvg-gl-rs", 
+    "pencil-rs"
+]

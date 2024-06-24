@@ -1,0 +1,27 @@
+[submodule "colored-rs"]
+	path = colored-rs
+	url = https://github.com/XionWin/colored-rs.git
+[submodule "logger-rs"]
+	path = logger-rs
+	url = https://github.com/XionWin/logger-rs.git
+[submodule "kernel/drm-rs"]
+	path = kernel/drm-rs
+	url = https://github.com/XionWin/drm-rs.git
+[submodule "kernel/gbm-rs"]
+	path = kernel/gbm-rs
+	url = https://www.github.com/xionwin/gbm-rs.git
+[submodule "kernel/egl-rs"]
+	path = kernel/egl-rs
+	url = https://www.github.com/xionwin/egl-rs.git
+[submodule "gles-rs"]
+	path = gles-rs
+	url = https://github.com/XionWin/gles-rs.git
+[submodule "color-rs"]
+	path = color-rs
+	url = https://github.com/XionWin/color-rs.git
+[submodule "kernel/kms-rs"]
+	path = kernel/kms-rs
+	url = https://github.com/XionWin/kms-rs.git
+[submodule "nvg-rs"]
+	path = nvg-rs
+	url = https://github.com/XionWin/nvg-rs.git

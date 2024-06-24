@@ -1,0 +1,17 @@
+[package]
+name = "nvg-gl-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "*"
+once_cell = "*"
+anyhow = "*"
+time = { version = "*", features = ["local-offset", "formatting", "macros"] }
+slab = "*"
+image = "*"
+colored-rs = { path="../colored-rs" }
+gles-rs = { path="../gles-rs" }
+nvg-rs = { path="../nvg-rs" }
