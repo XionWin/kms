@@ -27,15 +27,19 @@ impl KMS {
             conn.get_connection_status() == drm_rs::ConnectionStatus::Connected
         });
         let mode = drm.get_mode();
-        print_debug!(
-            "actived_mode: {:?} type: {}",
-            mode.get_name(),
-            mode.get_mode_type()
-                .iter_names()
-                .map(|x| x.0)
-                .collect::<Vec<_>>()
-                .join(" ")
-        );
+        match mode {
+            Some(m) =>
+                print_debug!(
+                    "actived_mode: {:?} type: {}",
+                    m.get_name(),
+                    m.get_mode_type()
+                        .iter_names()
+                        .map(|x| x.0)
+                        .collect::<Vec<_>>()
+                        .join(" ")
+                ),
+            None => print_debug!("can't find mode")
+        }
     
         let (width, height) = (drm.crtc.get_width(), drm.crtc.get_height());
     

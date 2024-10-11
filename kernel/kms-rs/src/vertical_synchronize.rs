@@ -18,7 +18,7 @@ impl VerticalSynchronizeTrait for Context {
         let drm_fd = drm.get_fd();
         let drm_crtc_id = drm.crtc.get_id();
         let drm_connector_ids = &vec![drm.connector.get_id()];
-        let drm_mode = drm.get_mode().get_handle();
+        let drm_mode = drm.get_mode().unwrap().get_handle();
         match drm_rs::set_crtc(
             drm_fd,
             drm_crtc_id,

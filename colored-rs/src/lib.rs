@@ -494,14 +494,8 @@ impl ColoredString {
         self.bgcolor.is_none() && self.fgcolor.is_none() && self.style == style::CLEAR
     }
 
-    #[cfg(not(feature = "no-color"))]
     fn has_colors(&self) -> bool {
         control::SHOULD_COLORIZE.should_colorize()
-    }
-
-    #[cfg(feature = "no-color")]
-    fn has_colors(&self) -> bool {
-        false
     }
 
     fn compute_style(&self) -> String {

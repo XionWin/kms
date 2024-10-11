@@ -13,3 +13,6 @@ rusttype = { version = "0.8.1", features = ["gpu_cache"] }
 slab = "*"
 image = "0.22.3"
 rawpointer = "*"
+
+[lints.rust]
+ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(has_to_int_unchecked)'] }

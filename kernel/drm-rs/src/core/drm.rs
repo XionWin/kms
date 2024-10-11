@@ -54,9 +54,9 @@ impl Drm {
         self.fd
     }
     
-    pub fn get_mode(&self) -> &crate::core::ModeInfo {
-        match self.connector.modes.iter().find(|x| crate::bitwise_contains!(x.get_mode_type(), crate::ffi::enums::DrmModeType::PREFERRED)) {
-            Some(mode) => mode,
+    pub fn get_mode(&self) -> Option<&crate::core::ModeInfo> {
+        match &self.connector.modes {
+            Some(modes) => modes.iter().find(|x| crate::bitwise_contains!(x.get_mode_type(), crate::ffi::enums::DrmModeType::PREFERRED)),
             None => panic!("Mode not found")
         }
     }

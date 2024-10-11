@@ -13,7 +13,7 @@ pub struct Connector {
     
     subpixel: crate::ffi::enums::SubPixel,
 
-    pub(crate) modes: Vec<crate::core::ModeInfo>,
+    pub(crate) modes: Option<Vec<crate::core::ModeInfo>>,
 }
 
 impl Connector {
@@ -56,8 +56,15 @@ impl Drop for Connector {
     }
 }
 
-fn get_modes(c: &crate::ffi::DrmModeConnector) -> Vec<crate::core::ModeInfo> {
-    unsafe {std::slice::from_raw_parts(c.modes, c.count_modes as usize)}.iter().map(|x| {
-        crate::core::ModeInfo::new(x)
-    }).collect::<Vec<_>>()
+fn get_modes(c: &crate::ffi::DrmModeConnector) -> Option<Vec<crate::core::ModeInfo>> {
+    if c.count_modes > 0 {
+        Some(
+            unsafe {std::slice::from_raw_parts(c.modes, c.count_modes as usize)}.iter().map(|x| {
+                crate::core::ModeInfo::new(x)
+            }).collect::<Vec<_>>()
+        )
+    }
+    else {
+        None
+    }
 }
