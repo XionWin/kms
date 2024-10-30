@@ -15,6 +15,8 @@ mod pencil_test;
 
 pub use shape::*;
 
+const MIDNIGHT_BLUE: (f32, f32, f32, f32) = (25f32 / 255f32, 25f32 / 255f32, 112f32 / 255f32, 1f32);
+
 fn main() {
     print_hight_light!("====================[KMS DEMO]====================");
     print_debug!(
@@ -57,7 +59,8 @@ pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     gles_rs::uniform2f(gles_rs::get_uniform_location(program.get_id(), "uViewSize"), kms.get_width() as _, kms.get_height() as _);
     gles_rs::viewport(0, 0, kms.get_width(), kms.get_height());
     
-    let (r, g, b, a) = nvg_rs::color::Color::rgb_i(25, 25, 112).into();
+    // let (r, g, b, a) = nvg_rs::color::Color::rgb_i(25, 25, 112).into();
+    let (r, g, b, a) = MIDNIGHT_BLUE;
     gles_rs::clear_color(r, g, b, a);
 
     // let renderer = nvg_gl_rs::Renderer::create().unwrap();

@@ -1,13 +1,13 @@
 use gles_rs::GfxProgram;
 use kms_rs::Graphic;
 use nvg_rs::context::Vertex;
-use once_cell::sync::Lazy;
+// use once_cell::sync::Lazy;
 
 pub fn init(graphic: &mut Graphic<GfxProgram>) {
     let (width, height) = (graphic.get_width() as f32, graphic.get_height() as f32);
     let program = graphic.get_tag_mut();
     
-    let image = image::ImageReader::open("resources/images/bg.png").unwrap().decode().unwrap();
+    let image = image::ImageReader::open("resources/images/items.png").unwrap().decode().unwrap();
     let (image_width, image_height) = (image.width() as f32, image.height() as f32);
     let (x, y, w, h) = ((width - image_width) / 2.0, (height - image_height) / 2.0, image_width, image_height);
 
@@ -74,20 +74,20 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
 }
 
 
-static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
+// static STARTED_TICK: Lazy<std::time::SystemTime> = Lazy::new(|| std::time::SystemTime::now());
 pub fn update(graphic: &mut Graphic<GfxProgram>) {
-    let started_tick = STARTED_TICK.to_owned();
-    let h = std::time::SystemTime::now()
-        .duration_since(started_tick)
-        .unwrap()
-        .as_millis() as f64
-        / 10_000f64
-        % 1f64;
-    let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
-    let (r, g, b, a) = hsv.into();
-    gles_rs::clear_color(r, g, b, a);
-    gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT | gles_rs::ffi::GL_DEPTH_BUFFER_BIT);
+    // let started_tick = STARTED_TICK.to_owned();
+    // let h = std::time::SystemTime::now()
+    //     .duration_since(started_tick)
+    //     .unwrap()
+    //     .as_millis() as f64
+    //     / 10_000f64
+    //     % 1f64;
+    // let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
+    // let (r, g, b, a) = hsv.into();
+    // gles_rs::clear_color(r, g, b, a);
 
+    gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT | gles_rs::ffi::GL_DEPTH_BUFFER_BIT);
     gles_rs::bind_vertex_array(1);
     // Enable Alpha
     gles_rs::enable(gles_rs::def::EnableCap::Blend);
