@@ -87,7 +87,7 @@ pub fn update(graphic: &mut Graphic<GfxProgram>) {
     // let (r, g, b, a) = hsv.into();
     // gles_rs::clear_color(r, g, b, a);
 
-    gles_rs::clear(gles_rs::ffi::GL_COLOR_BUFFER_BIT | gles_rs::ffi::GL_DEPTH_BUFFER_BIT);
+    gles_rs::clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     gles_rs::bind_vertex_array(1);
     // Enable Alpha
     gles_rs::enable(gles_rs::def::EnableCap::Blend);

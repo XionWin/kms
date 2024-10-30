@@ -4,8 +4,8 @@ impl crate::GfxShader {
         source.push(b'\0');
         let sources = vec![source.as_ptr()];
         unsafe {
-            crate::ffi::glShaderSource(self.id, 1, sources.as_ptr(), std::ptr::null());
-            crate::ffi::glCompileShader(self.id);
+            gl::ShaderSource(self.id, 1, sources.as_ptr(), std::ptr::null());
+            gl::CompileShader(self.id);
         }
         check_compile(self)
     }
@@ -14,7 +14,7 @@ impl crate::GfxShader {
 fn check_compile(shader: super::GfxShader) -> super::GfxShader {
     let mut is_compiled = 0;
     unsafe {
-        crate::ffi::glGetShaderiv(shader.id, crate::ffi::GL_COMPILE_STATUS, &mut is_compiled);
+        gl::GetShaderiv(shader.id, gl::COMPILE_STATUS, &mut is_compiled);
     }
     if is_compiled == 0 {
         panic!("GLES shader compile faild");

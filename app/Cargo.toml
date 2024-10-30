@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 libc = "*"
+gl = "*"
 once_cell = "*"
 time = { version = "*", features = ["local-offset", "formatting", "macros"] }
 image = "*"

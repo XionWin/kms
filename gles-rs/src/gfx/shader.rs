@@ -12,7 +12,7 @@ impl GfxShader {
     pub fn new(shader_type: crate::def::ShaderType, path: &str) -> Self {
         Self {
             id: unsafe {
-                crate::ffi::glCreateShader(shader_type as _)
+                gl::CreateShader(shader_type as _)
             },
             source: std::fs::read_to_string(path)
             .expect("unread the file"),
@@ -24,7 +24,7 @@ impl GfxShader {
 impl Drop for GfxShader {
     fn drop(&mut self) {
         unsafe {
-            crate::ffi::glDeleteShader(self.id);
+            gl::DeleteShader(self.id);
         }
     }
 }

@@ -1,11 +1,11 @@
 #[repr(u32)]
 pub enum VertexAttribPointerType {
-	Byte = crate::ffi::GL_BYTE,
-	UnsignedByte = crate::ffi::GL_UNSIGNED_BYTE,
-	Short = crate::ffi::GL_SHORT,
-	UnsignedShort = crate::ffi::GL_UNSIGNED_SHORT,
-	Int = crate::ffi::GL_INT,
-	UnsignedInt = crate::ffi::GL_UNSIGNED_INT,
-	Float = crate::ffi::GL_FLOAT,
-	Fixed = crate::ffi::GL_FIXED
+	Byte = gl::BYTE,
+	UnsignedByte = gl::UNSIGNED_BYTE,
+	Short = gl::SHORT,
+	UnsignedShort = gl::UNSIGNED_SHORT,
+	Int = gl::INT,
+	UnsignedInt = gl::UNSIGNED_INT,
+	Float = gl::FLOAT,
+	Fixed = gl::FIXED
 }

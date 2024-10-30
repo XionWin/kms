@@ -43,13 +43,13 @@ impl Shader {
 
         gles_rs::compile_shader(vert);
         let status = gles_rs::get_shaderiv(vert);
-        if status != gles_rs::ffi::GL_TRUE as i32 {
+        if status != gl::TRUE as i32 {
             return Err(shader_error(vert, "shader.vert"));
         }
 
         gles_rs::compile_shader(frag);
         let status = gles_rs::get_shaderiv(frag);
-        if status != gles_rs::ffi::GL_TRUE as i32 {
+        if status != gl::TRUE as i32 {
             return Err(shader_error(vert, "shader.frag"));
         }
 
@@ -91,10 +91,10 @@ enum CallType {
 
 #[allow(dead_code)]
 struct Blend {
-    src_rgb: gles_rs::ffi::GLenum,
-    dst_rgb: gles_rs::ffi::GLenum,
-    src_alpha: gles_rs::ffi::GLenum,
-    dst_alpha: gles_rs::ffi::GLenum,
+    src_rgb: gl::types::GLenum,
+    dst_rgb: gl::types::GLenum,
+    src_alpha: gl::types::GLenum,
+    dst_alpha: gl::types::GLenum,
 }
 
 impl From<CompositeOperationState> for Blend {
@@ -121,7 +121,7 @@ struct Call {
 }
 
 struct Texture {
-    tex: gles_rs::ffi::GLuint,
+    tex: gl::types::GLuint,
     width: usize,
     height: usize,
     texture_type: TextureType,
@@ -164,9 +164,9 @@ pub struct Renderer {
     shader: Shader,
     textures: Slab<Texture>,
     view: Extent,
-    vert_buf: gles_rs::ffi::GLuint,
-    vert_arr: gles_rs::ffi::GLuint,
-    frag_buf: gles_rs::ffi::GLuint,
+    vert_buf: gl::types::GLuint,
+    vert_arr: gl::types::GLuint,
+    frag_buf: gl::types::GLuint,
     calls: Vec<Call>,
     paths: Vec<GLPath>,
     vertexes: Vec<Vertex>,
@@ -923,18 +923,18 @@ impl renderer::Renderer for Renderer {
 }
 
 #[allow(dead_code)]
-fn shader_error(shader: gles_rs::ffi::GLuint, filename: &str) -> anyhow::Error {
+fn shader_error(shader: gl::types::GLuint, filename: &str) -> anyhow::Error {
     let err_msg = gles_rs::get_shader_information(shader).unwrap();
     anyhow!("failed to compile shader: {}: {}", filename, err_msg)
 }
 
 #[allow(dead_code)]
-fn program_error(prog: gles_rs::ffi::GLuint) -> anyhow::Error {
+fn program_error(prog: gl::types::GLuint) -> anyhow::Error {
     let err_msg = gles_rs::get_program_information(prog).unwrap();
     anyhow!("failed to link program: {}", err_msg)
 }
 
-fn convert_blend_factor(factor: BlendFactor) -> gles_rs::ffi::GLenum {
+fn convert_blend_factor(factor: BlendFactor) -> gl::types::GLenum {
     match factor {
         BlendFactor::Zero => gles_rs::def::BlendingFactor::Zero as _,
         BlendFactor::One => gles_rs::def::BlendingFactor::One as _,

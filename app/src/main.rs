@@ -25,6 +25,9 @@ fn main() {
     );
 
     let mut kms = kms_rs::KMS::new(None, kms_rs::SurfaceType::OpenGlesV2);
+
+    gles_rs::load();
+
     begin_render!(init, update, &mut kms);
 }
 
