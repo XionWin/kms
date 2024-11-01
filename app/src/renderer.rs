@@ -7,7 +7,7 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
     let (width, height) = (graphic.get_width() as f32, graphic.get_height() as f32);
     let program = graphic.get_tag_mut();
     
-    let image = image::ImageReader::open("resources/images/items.png").unwrap().decode().unwrap();
+    let image = image::ImageReader::open("resources/images/bg_3.png").unwrap().decode().unwrap();
     let (image_width, image_height) = (image.width() as f32, image.height() as f32);
     let (x, y, w, h) = ((width - image_width) / 2.0, (height - image_height) / 2.0, image_width, image_height);
 

@@ -1,13 +1,13 @@
 #!/bin/bash
 
 VSCODE_WS="$1"
-SSH_REMOTE="$2"
-GDBPORT="$3"
+PROJECT="$2"
+SSH_REMOTE="$3"
+GDBPORT="$4"
 
 TARGET_USER="pi"
 ROOT_USER="root"
 
-PROJECT="kms"
 APP="app"
 TARGET_ARCH="aarch64-unknown-linux-gnu"
 
