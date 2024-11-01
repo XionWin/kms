@@ -16,7 +16,7 @@ drm-rs = { path="../kernel/drm-rs" }
 gbm-rs = { path="../kernel/gbm-rs" }
 egl-rs = { path="../kernel/egl-rs" }
 kms-rs = { path="../kernel/kms-rs" }
-gles-rs = { path="../gles-rs" }
+opengl-rs = { path="../opengl-rs" }
 nvg-rs = { path="../nvg-rs" }
 nvg-gl-rs = { path="../nvg-gl-rs" }
 pencil-rs = { path="../pencil-rs" }

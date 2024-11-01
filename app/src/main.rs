@@ -1,4 +1,4 @@
-use gles_rs::GfxProgram;
+use opengl_rs::GfxProgram;
 use std::time::SystemTime;
 
 #[macro_use]
@@ -26,7 +26,7 @@ fn main() {
 
     let mut kms = kms_rs::KMS::new(None, kms_rs::SurfaceType::OpenGlesV2);
 
-    gles_rs::load();
+    opengl_rs::load();
 
     begin_render!(init, update, &mut kms);
 }
@@ -34,37 +34,37 @@ fn main() {
 pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
     colored_rs::print_debug!(
         "gl_extensions: {:?}",
-        gles_rs::get_string(gles_rs::def::StringName::Extensions)
+        opengl_rs::get_string(opengl_rs::def::StringName::Extensions)
     );
     colored_rs::print_debug!(
         "gl_version: {:?}",
-        gles_rs::get_string(gles_rs::def::StringName::Version)
+        opengl_rs::get_string(opengl_rs::def::StringName::Version)
     );
     colored_rs::print_debug!(
         "gl_sharding_language_version: {:?}",
-        gles_rs::get_string(gles_rs::def::StringName::ShadingLanguageVersion)
+        opengl_rs::get_string(opengl_rs::def::StringName::ShadingLanguageVersion)
     );
     colored_rs::print_debug!(
         "gl_vendor: {:?}",
-        gles_rs::get_string(gles_rs::def::StringName::Vendor)
+        opengl_rs::get_string(opengl_rs::def::StringName::Vendor)
     );
     colored_rs::print_debug!(
         "gl_renderer: {:?}",
-        gles_rs::get_string(gles_rs::def::StringName::Renderer)
+        opengl_rs::get_string(opengl_rs::def::StringName::Renderer)
     );
 
-    let program = gles_rs::GfxProgram::new(
+    let program = opengl_rs::GfxProgram::new(
         "resources/shaders/nvgv2.vert",
         "resources/shaders/nvgv2.frag",
     );
     program.active();
 
-    gles_rs::uniform2f(gles_rs::get_uniform_location(program.get_id(), "uViewSize"), kms.get_width() as _, kms.get_height() as _);
-    gles_rs::viewport(0, 0, kms.get_width(), kms.get_height());
+    opengl_rs::uniform2f(opengl_rs::get_uniform_location(program.get_id(), "uViewSize"), kms.get_width() as _, kms.get_height() as _);
+    opengl_rs::viewport(0, 0, kms.get_width(), kms.get_height());
     
     // let (r, g, b, a) = nvg_rs::color::Color::rgb_i(25, 25, 112).into();
     let (r, g, b, a) = MIDNIGHT_BLUE;
-    gles_rs::clear_color(r, g, b, a);
+    opengl_rs::clear_color(r, g, b, a);
 
     // let renderer = nvg_gl_rs::Renderer::create().unwrap();
     // let context = nvg_rs::context::Context::create(renderer).unwrap();

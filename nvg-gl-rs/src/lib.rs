@@ -22,52 +22,52 @@ struct Shader {
 
 impl Drop for Shader {
     fn drop(&mut self) {
-        gles_rs::delete_program(self.prog);
-        gles_rs::delete_shader(self.vert);
-        gles_rs::delete_shader(self.frag);
+        opengl_rs::delete_program(self.prog);
+        opengl_rs::delete_shader(self.vert);
+        opengl_rs::delete_shader(self.frag);
     }
 }
 
 impl Shader {
     unsafe fn load() -> anyhow::Result<Shader> {
-        let prog = gles_rs::create_program();
-        let vert = gles_rs::create_shader(gles_rs::def::ShaderType::VertexShader);
-        let frag = gles_rs::create_shader(gles_rs::def::ShaderType::FragmentShader);
+        let prog = opengl_rs::create_program();
+        let vert = opengl_rs::create_shader(opengl_rs::def::ShaderType::VertexShader);
+        let frag = opengl_rs::create_shader(opengl_rs::def::ShaderType::FragmentShader);
         let vert_source =
             std::ffi::CString::from_vec_unchecked(include_bytes!("shader.vert").to_vec());
         let frag_source =
             std::ffi::CString::from_vec_unchecked(include_bytes!("shader.frag").to_vec());
 
-        gles_rs::shader_source(vert, &(vert_source.to_str().unwrap()));
-        gles_rs::shader_source(frag, &(frag_source.to_str().unwrap()));
+        opengl_rs::shader_source(vert, &(vert_source.to_str().unwrap()));
+        opengl_rs::shader_source(frag, &(frag_source.to_str().unwrap()));
 
-        gles_rs::compile_shader(vert);
-        let status = gles_rs::get_shaderiv(vert);
+        opengl_rs::compile_shader(vert);
+        let status = opengl_rs::get_shaderiv(vert);
         if status != gl::TRUE as i32 {
             return Err(shader_error(vert, "shader.vert"));
         }
 
-        gles_rs::compile_shader(frag);
-        let status = gles_rs::get_shaderiv(frag);
+        opengl_rs::compile_shader(frag);
+        let status = opengl_rs::get_shaderiv(frag);
         if status != gl::TRUE as i32 {
             return Err(shader_error(vert, "shader.frag"));
         }
 
-        gles_rs::attach_shader(prog, vert);
-        gles_rs::attach_shader(prog, frag);
+        opengl_rs::attach_shader(prog, vert);
+        opengl_rs::attach_shader(prog, frag);
 
-        gles_rs::bind_attrib_location(prog, 0, "vertex");
-        gles_rs::bind_attrib_location(prog, 1, "tcoord");
+        opengl_rs::bind_attrib_location(prog, 0, "vertex");
+        opengl_rs::bind_attrib_location(prog, 1, "tcoord");
 
-        gles_rs::link_program(prog);
-        gles_rs::check_link_status(prog);
+        opengl_rs::link_program(prog);
+        opengl_rs::check_link_status(prog);
 
         Ok(Shader {
             prog,
             frag,
             vert,
-            loc_viewsize: gles_rs::get_uniform_location(prog, "viewSize"),
-            loc_tex: gles_rs::get_uniform_location(prog, "tex"),
+            loc_viewsize: opengl_rs::get_uniform_location(prog, "viewSize"),
+            loc_tex: opengl_rs::get_uniform_location(prog, "tex"),
             // loc_frag: gl::GetUniformBlockIndex(prog, "frag"),
         })
     }
@@ -130,7 +130,7 @@ struct Texture {
 
 impl Drop for Texture {
     fn drop(&mut self) {
-        gles_rs::delete_texture(self.tex)
+        opengl_rs::delete_texture(self.tex)
     }
 }
 
@@ -175,8 +175,8 @@ pub struct Renderer {
 
 impl Drop for Renderer {
     fn drop(&mut self) {
-        gles_rs::delete_buffer(self.frag_buf);
-        gles_rs::delete_buffer(self.vert_buf);
+        opengl_rs::delete_buffer(self.frag_buf);
+        opengl_rs::delete_buffer(self.vert_buf);
         // gl::DeleteVertexArrays(1, &self.vert_arr);
     }
 }
@@ -187,17 +187,17 @@ impl Renderer {
         unsafe {
             let shader = Shader::load()?;
 
-            let vert_arr = gles_rs::gen_vertex_array();
+            let vert_arr = opengl_rs::gen_vertex_array();
 
-            let vert_buf = gles_rs::gen_buffer();
+            let vert_buf = opengl_rs::gen_buffer();
 
             // gl::UniformBlockBinding(shader.prog, shader.loc_frag, 0);
-            let frag_buf = gles_rs::gen_buffer();
+            let frag_buf = opengl_rs::gen_buffer();
 
             // let align: usize = std::mem::zeroed();
-            // gl::GetIntegerv(gles_rs::ffi::GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &mut align);
+            // gl::GetIntegerv(opengl_rs::ffi::GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &mut align);
 
-            gles_rs::finish();
+            opengl_rs::finish();
 
             Ok(Renderer {
                 shader,
@@ -226,90 +226,90 @@ impl Renderer {
 
         if let Some(img) = img {
             if let Some(texture) = self.textures.get(img) {
-                gles_rs::bind_texture(gles_rs::def::TextureTarget::Texture2D, texture.tex);
+                opengl_rs::bind_texture(opengl_rs::def::TextureTarget::Texture2D, texture.tex);
             }
         } else {
-            gles_rs::bind_texture(gles_rs::def::TextureTarget::Texture2D, 0);
+            opengl_rs::bind_texture(opengl_rs::def::TextureTarget::Texture2D, 0);
         }
     }
 
     unsafe fn do_fill(&self, call: &Call) {
         let paths = &self.paths[call.path_offset..call.path_offset + call.path_count];
 
-        gles_rs::enable(gles_rs::def::EnableCap::StencilTest);
-        gles_rs::stencil_mask(0xff);
-        gles_rs::stencil_func(gles_rs::def::All::Always, 0, 0xff);
-        gles_rs::color_mask(false, false, false, false);
+        opengl_rs::enable(opengl_rs::def::EnableCap::StencilTest);
+        opengl_rs::stencil_mask(0xff);
+        opengl_rs::stencil_func(opengl_rs::def::All::Always, 0, 0xff);
+        opengl_rs::color_mask(false, false, false, false);
 
         self.set_uniforms(call.uniform_offset, call.image);
 
-        gles_rs::stencil_op_separate(
-            gles_rs::def::All::Front,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::IncrWrap,
+        opengl_rs::stencil_op_separate(
+            opengl_rs::def::All::Front,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::IncrWrap,
         );
-        gles_rs::stencil_op_separate(
-            gles_rs::def::All::Back,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::DecrWrap,
+        opengl_rs::stencil_op_separate(
+            opengl_rs::def::All::Back,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::DecrWrap,
         );
-        gles_rs::disable(gles_rs::def::EnableCap::CullFace);
+        opengl_rs::disable(opengl_rs::def::EnableCap::CullFace);
         for path in paths {
-            gles_rs::draw_arrays(
-                gles_rs::def::BeginMode::TriangleFan,
+            opengl_rs::draw_arrays(
+                opengl_rs::def::BeginMode::TriangleFan,
                 path.fill_offset as i32,
                 path.fill_count as i32,
             );
         }
-        gles_rs::enable(gles_rs::def::EnableCap::CullFace);
+        opengl_rs::enable(opengl_rs::def::EnableCap::CullFace);
 
-        gles_rs::color_mask(true, true, true, true);
+        opengl_rs::color_mask(true, true, true, true);
 
         self.set_uniforms(call.uniform_offset + 1, call.image);
 
-        gles_rs::stencil_func(gles_rs::def::All::Equal, 0x00, 0xff);
-        gles_rs::stencil_op(
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
+        opengl_rs::stencil_func(opengl_rs::def::All::Equal, 0x00, 0xff);
+        opengl_rs::stencil_op(
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
         );
         for path in paths {
-            gles_rs::draw_arrays(
-                gles_rs::def::BeginMode::TriangleStrip,
+            opengl_rs::draw_arrays(
+                opengl_rs::def::BeginMode::TriangleStrip,
                 path.stroke_offset as i32,
                 path.stroke_count as i32,
             );
         }
 
-        gles_rs::stencil_func(gles_rs::def::All::Notequal, 0x00, 0xff);
-        gles_rs::stencil_op(
-            gles_rs::def::All::Zero,
-            gles_rs::def::All::Zero,
-            gles_rs::def::All::Zero,
+        opengl_rs::stencil_func(opengl_rs::def::All::Notequal, 0x00, 0xff);
+        opengl_rs::stencil_op(
+            opengl_rs::def::All::Zero,
+            opengl_rs::def::All::Zero,
+            opengl_rs::def::All::Zero,
         );
-        gles_rs::draw_arrays(
-            gles_rs::def::BeginMode::TriangleStrip,
+        opengl_rs::draw_arrays(
+            opengl_rs::def::BeginMode::TriangleStrip,
             call.triangle_offset as i32,
             call.triangle_count as i32,
         );
 
-        gles_rs::disable(gles_rs::def::EnableCap::StencilTest);
+        opengl_rs::disable(opengl_rs::def::EnableCap::StencilTest);
     }
 
     unsafe fn do_convex_fill(&self, call: &Call) {
         let paths = &self.paths[call.path_offset..call.path_offset + call.path_count];
         self.set_uniforms(call.uniform_offset, call.image);
         for path in paths {
-            gles_rs::draw_arrays(
-                gles_rs::def::BeginMode::TriangleFan,
+            opengl_rs::draw_arrays(
+                opengl_rs::def::BeginMode::TriangleFan,
                 path.fill_offset as i32,
                 path.fill_count as i32,
             );
             if path.stroke_count > 0 {
-                gles_rs::draw_arrays(
-                    gles_rs::def::BeginMode::TriangleStrip,
+                opengl_rs::draw_arrays(
+                    opengl_rs::def::BeginMode::TriangleStrip,
                     path.stroke_offset as i32,
                     path.stroke_count as i32,
                 );
@@ -320,62 +320,62 @@ impl Renderer {
     unsafe fn do_stroke(&self, call: &Call) {
         let paths = &self.paths[call.path_offset..call.path_offset + call.path_count];
 
-        gles_rs::disable(gles_rs::def::EnableCap::StencilTest);
-        gles_rs::stencil_mask(0xff);
-        gles_rs::stencil_func(gles_rs::def::All::Equal, 0x0, 0xff);
-        gles_rs::stencil_op(
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Incr,
+        opengl_rs::disable(opengl_rs::def::EnableCap::StencilTest);
+        opengl_rs::stencil_mask(0xff);
+        opengl_rs::stencil_func(opengl_rs::def::All::Equal, 0x0, 0xff);
+        opengl_rs::stencil_op(
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Incr,
         );
 
         self.set_uniforms(call.uniform_offset + 1, call.image);
         for path in paths {
-            gles_rs::draw_arrays(
-                gles_rs::def::BeginMode::TriangleStrip,
+            opengl_rs::draw_arrays(
+                opengl_rs::def::BeginMode::TriangleStrip,
                 path.stroke_offset as i32,
                 path.stroke_count as i32,
             );
         }
 
         self.set_uniforms(call.uniform_offset, call.image);
-        gles_rs::stencil_func(gles_rs::def::All::Equal, 0x0, 0xff);
-        gles_rs::stencil_op(
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
-            gles_rs::def::All::Keep,
+        opengl_rs::stencil_func(opengl_rs::def::All::Equal, 0x0, 0xff);
+        opengl_rs::stencil_op(
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
+            opengl_rs::def::All::Keep,
         );
         for path in paths {
-            gles_rs::draw_arrays(
-                gles_rs::def::BeginMode::TriangleStrip,
+            opengl_rs::draw_arrays(
+                opengl_rs::def::BeginMode::TriangleStrip,
                 path.stroke_offset as i32,
                 path.stroke_count as i32,
             );
         }
 
-        gles_rs::color_mask(false, false, false, false);
-        gles_rs::stencil_func(gles_rs::def::All::Always, 0x0, 0xff);
-        gles_rs::stencil_op(
-            gles_rs::def::All::Zero,
-            gles_rs::def::All::Zero,
-            gles_rs::def::All::Zero,
+        opengl_rs::color_mask(false, false, false, false);
+        opengl_rs::stencil_func(opengl_rs::def::All::Always, 0x0, 0xff);
+        opengl_rs::stencil_op(
+            opengl_rs::def::All::Zero,
+            opengl_rs::def::All::Zero,
+            opengl_rs::def::All::Zero,
         );
         for path in paths {
-            gles_rs::draw_arrays(
-                gles_rs::def::BeginMode::TriangleStrip,
+            opengl_rs::draw_arrays(
+                opengl_rs::def::BeginMode::TriangleStrip,
                 path.stroke_offset as i32,
                 path.stroke_count as i32,
             );
         }
-        gles_rs::color_mask(true, true, true, true);
+        opengl_rs::color_mask(true, true, true, true);
 
-        gles_rs::disable(gles_rs::def::EnableCap::StencilTest);
+        opengl_rs::disable(opengl_rs::def::EnableCap::StencilTest);
     }
 
     unsafe fn do_triangles(&self, call: &Call) {
         self.set_uniforms(call.uniform_offset, call.image);
-        gles_rs::draw_arrays(
-            gles_rs::def::BeginMode::Triangles,
+        opengl_rs::draw_arrays(
+            opengl_rs::def::BeginMode::Triangles,
             call.triangle_offset as i32,
             call.triangle_count as i32,
         );
@@ -480,34 +480,34 @@ impl renderer::Renderer for Renderer {
         data: Option<&[u8]>,
     ) -> anyhow::Result<ImageId> {
         let tex = {
-            let tex = gles_rs::gen_texture();
-            gles_rs::bind_texture(gles_rs::def::TextureTarget::Texture2D, tex);
-            gles_rs::pixel_storei(gles_rs::def::All::UnpackAlignment, 1);
+            let tex = opengl_rs::gen_texture();
+            opengl_rs::bind_texture(opengl_rs::def::TextureTarget::Texture2D, tex);
+            opengl_rs::pixel_storei(opengl_rs::def::All::UnpackAlignment, 1);
 
             match texture_type {
                 TextureType::RGBA => {
-                    gles_rs::tex_image_2d(
-                        gles_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::tex_image_2d(
+                        opengl_rs::def::TextureTarget::Texture2D,
                         0,
-                        gles_rs::def::PixelInternalFormat::Rgba,
+                        opengl_rs::def::PixelInternalFormat::Rgba,
                         width as i32,
                         height as i32,
                         0,
-                        gles_rs::def::PixelFormat::Rgba,
-                        gles_rs::def::PixelType::UnsignedByte,
+                        opengl_rs::def::PixelFormat::Rgba,
+                        opengl_rs::def::PixelType::UnsignedByte,
                         data,
                     );
                 }
                 TextureType::Alpha => {
-                    gles_rs::tex_image_2d(
-                        gles_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::tex_image_2d(
+                        opengl_rs::def::TextureTarget::Texture2D,
                         0,
-                        gles_rs::def::PixelInternalFormat::R8,
+                        opengl_rs::def::PixelInternalFormat::R8,
                         width as i32,
                         height as i32,
                         0,
-                        gles_rs::def::PixelFormat::Red,
-                        gles_rs::def::PixelType::UnsignedByte,
+                        opengl_rs::def::PixelFormat::Red,
+                        opengl_rs::def::PixelType::UnsignedByte,
                         data,
                     );
                 }
@@ -515,83 +515,83 @@ impl renderer::Renderer for Renderer {
 
             if flags.contains(ImageFlags::GENERATE_MIPMAPS) {
                 if flags.contains(ImageFlags::NEAREST) {
-                    gles_rs::tex_parameter_i(
-                        gles_rs::def::TextureTarget::Texture2D,
-                        gles_rs::def::TextureParameterName::TextureMinFilter,
-                        gles_rs::def::TextureMinFilter::NearestMipmapNearest as _,
+                    opengl_rs::tex_parameter_i(
+                        opengl_rs::def::TextureTarget::Texture2D,
+                        opengl_rs::def::TextureParameterName::TextureMinFilter,
+                        opengl_rs::def::TextureMinFilter::NearestMipmapNearest as _,
                     );
                 } else {
-                    gles_rs::tex_parameter_i(
-                        gles_rs::def::TextureTarget::Texture2D,
-                        gles_rs::def::TextureParameterName::TextureMinFilter,
-                        gles_rs::def::TextureMinFilter::LinearMipmapLinear as _,
+                    opengl_rs::tex_parameter_i(
+                        opengl_rs::def::TextureTarget::Texture2D,
+                        opengl_rs::def::TextureParameterName::TextureMinFilter,
+                        opengl_rs::def::TextureMinFilter::LinearMipmapLinear as _,
                     );
                 }
             } else {
                 if flags.contains(ImageFlags::NEAREST) {
-                    gles_rs::tex_parameter_i(
-                        gles_rs::def::TextureTarget::Texture2D,
-                        gles_rs::def::TextureParameterName::TextureMinFilter,
-                        gles_rs::def::TextureMinFilter::Nearest as _,
+                    opengl_rs::tex_parameter_i(
+                        opengl_rs::def::TextureTarget::Texture2D,
+                        opengl_rs::def::TextureParameterName::TextureMinFilter,
+                        opengl_rs::def::TextureMinFilter::Nearest as _,
                     );
                 } else {
-                    gles_rs::tex_parameter_i(
-                        gles_rs::def::TextureTarget::Texture2D,
-                        gles_rs::def::TextureParameterName::TextureMinFilter,
-                        gles_rs::def::TextureMinFilter::Linear as _,
+                    opengl_rs::tex_parameter_i(
+                        opengl_rs::def::TextureTarget::Texture2D,
+                        opengl_rs::def::TextureParameterName::TextureMinFilter,
+                        opengl_rs::def::TextureMinFilter::Linear as _,
                     );
                 }
             }
 
             if flags.contains(ImageFlags::NEAREST) {
-                gles_rs::tex_parameter_i(
-                    gles_rs::def::TextureTarget::Texture2D,
-                    gles_rs::def::TextureParameterName::TextureMagFilter,
-                    gles_rs::def::TextureMinFilter::Nearest as _,
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureMagFilter,
+                    opengl_rs::def::TextureMinFilter::Nearest as _,
                 );
             } else {
-                gles_rs::tex_parameter_i(
-                    gles_rs::def::TextureTarget::Texture2D,
-                    gles_rs::def::TextureParameterName::TextureMagFilter,
-                    gles_rs::def::TextureMinFilter::Linear as _,
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureMagFilter,
+                    opengl_rs::def::TextureMinFilter::Linear as _,
                 );
             }
 
             if flags.contains(ImageFlags::REPEATX) {
-                gles_rs::tex_parameter_i(
-                    gles_rs::def::TextureTarget::Texture2D,
-                    gles_rs::def::TextureParameterName::TextureWrapS,
-                    gles_rs::def::TextureWrapMode::Repeat as _,
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureWrapS,
+                    opengl_rs::def::TextureWrapMode::Repeat as _,
                 );
             } else {
-                gles_rs::tex_parameter_i(
-                    gles_rs::def::TextureTarget::Texture2D,
-                    gles_rs::def::TextureParameterName::TextureWrapS,
-                    gles_rs::def::TextureWrapMode::ClampToEdge as _,
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureWrapS,
+                    opengl_rs::def::TextureWrapMode::ClampToEdge as _,
                 );
             }
 
             if flags.contains(ImageFlags::REPEATY) {
-                gles_rs::tex_parameter_i(
-                    gles_rs::def::TextureTarget::Texture2D,
-                    gles_rs::def::TextureParameterName::TextureWrapT,
-                    gles_rs::def::TextureWrapMode::Repeat as _,
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureWrapT,
+                    opengl_rs::def::TextureWrapMode::Repeat as _,
                 );
             } else {
-                gles_rs::tex_parameter_i(
-                    gles_rs::def::TextureTarget::Texture2D,
-                    gles_rs::def::TextureParameterName::TextureWrapT,
-                    gles_rs::def::TextureWrapMode::ClampToEdge as _,
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureWrapT,
+                    opengl_rs::def::TextureWrapMode::ClampToEdge as _,
                 );
             }
 
-            gles_rs::pixel_storei(gles_rs::def::All::UnpackAlignment, 4);
+            opengl_rs::pixel_storei(opengl_rs::def::All::UnpackAlignment, 4);
 
             if flags.contains(ImageFlags::GENERATE_MIPMAPS) {
-                gles_rs::generate_mipmap(gles_rs::def::GenerateMipmapTarget::Texture2D);
+                opengl_rs::generate_mipmap(opengl_rs::def::GenerateMipmapTarget::Texture2D);
             }
 
-            gles_rs::bind_texture(gles_rs::def::TextureTarget::Texture2D, 0);
+            opengl_rs::bind_texture(opengl_rs::def::TextureTarget::Texture2D, 0);
             tex
         };
 
@@ -607,7 +607,7 @@ impl renderer::Renderer for Renderer {
 
     fn delete_texture(&mut self, img: ImageId) -> anyhow::Result<()> {
         if let Some(texture) = self.textures.get(img) {
-            gles_rs::delete_texture(texture.tex);
+            opengl_rs::delete_texture(texture.tex);
             self.textures.remove(img);
             Ok(())
         } else {
@@ -625,36 +625,36 @@ impl renderer::Renderer for Renderer {
         data: &[u8],
     ) -> anyhow::Result<()> {
         if let Some(texture) = self.textures.get(img) {
-            gles_rs::bind_texture(gles_rs::def::TextureTarget::Texture2D, texture.tex);
-            gles_rs::pixel_storei(gles_rs::def::All::UnpackAlignment, 1);
+            opengl_rs::bind_texture(opengl_rs::def::TextureTarget::Texture2D, texture.tex);
+            opengl_rs::pixel_storei(opengl_rs::def::All::UnpackAlignment, 1);
 
             match texture.texture_type {
-                TextureType::RGBA => gles_rs::tex_sub_image_2d(
-                    gles_rs::def::TextureTarget::Texture2D,
+                TextureType::RGBA => opengl_rs::tex_sub_image_2d(
+                    opengl_rs::def::TextureTarget::Texture2D,
                     0,
                     x as _,
                     y as _,
                     width as i32,
                     height as i32,
-                    gles_rs::def::PixelFormat::Rgba,
-                    gles_rs::def::PixelType::UnsignedByte,
+                    opengl_rs::def::PixelFormat::Rgba,
+                    opengl_rs::def::PixelType::UnsignedByte,
                     Some(data),
                 ),
-                TextureType::Alpha => gles_rs::tex_sub_image_2d(
-                    gles_rs::def::TextureTarget::Texture2D,
+                TextureType::Alpha => opengl_rs::tex_sub_image_2d(
+                    opengl_rs::def::TextureTarget::Texture2D,
                     0,
                     x as i32,
                     y as i32,
                     width as i32,
                     height as i32,
-                    gles_rs::def::PixelFormat::Red,
-                    gles_rs::def::PixelType::UnsignedByte,
+                    opengl_rs::def::PixelFormat::Red,
+                    opengl_rs::def::PixelType::UnsignedByte,
                     Some(data),
                 ),
             }
 
-            gles_rs::pixel_storei(gles_rs::def::All::UnpackAlignment, 4);
-            gles_rs::bind_texture(gles_rs::def::TextureTarget::Texture2D, 0);
+            opengl_rs::pixel_storei(opengl_rs::def::All::UnpackAlignment, 4);
+            opengl_rs::bind_texture(opengl_rs::def::TextureTarget::Texture2D, 0);
             Ok(())
         } else {
             bail!("texture '{}' not found", img);
@@ -924,29 +924,29 @@ impl renderer::Renderer for Renderer {
 
 #[allow(dead_code)]
 fn shader_error(shader: gl::types::GLuint, filename: &str) -> anyhow::Error {
-    let err_msg = gles_rs::get_shader_information(shader).unwrap();
+    let err_msg = opengl_rs::get_shader_information(shader).unwrap();
     anyhow!("failed to compile shader: {}: {}", filename, err_msg)
 }
 
 #[allow(dead_code)]
 fn program_error(prog: gl::types::GLuint) -> anyhow::Error {
-    let err_msg = gles_rs::get_program_information(prog).unwrap();
+    let err_msg = opengl_rs::get_program_information(prog).unwrap();
     anyhow!("failed to link program: {}", err_msg)
 }
 
 fn convert_blend_factor(factor: BlendFactor) -> gl::types::GLenum {
     match factor {
-        BlendFactor::Zero => gles_rs::def::BlendingFactor::Zero as _,
-        BlendFactor::One => gles_rs::def::BlendingFactor::One as _,
-        BlendFactor::SrcColor => gles_rs::def::BlendingFactor::SrcColor as _,
-        BlendFactor::OneMinusSrcColor => gles_rs::def::BlendingFactor::OneMinusSrcColor as _,
-        BlendFactor::DstColor => gles_rs::def::BlendingFactor::DstColor as _,
-        BlendFactor::OneMinusDstColor => gles_rs::def::BlendingFactor::OneMinusDstColor as _,
-        BlendFactor::SrcAlpha => gles_rs::def::BlendingFactor::SrcAlpha as _,
-        BlendFactor::OneMinusSrcAlpha => gles_rs::def::BlendingFactor::OneMinusSrcAlpha as _,
-        BlendFactor::DstAlpha => gles_rs::def::BlendingFactor::DstAlpha as _,
-        BlendFactor::OneMinusDstAlpha => gles_rs::def::BlendingFactor::OneMinusDstAlpha as _,
-        BlendFactor::SrcAlphaSaturate => gles_rs::def::BlendingFactor::SrcAlphaSaturate as _,
+        BlendFactor::Zero => opengl_rs::def::BlendingFactor::Zero as _,
+        BlendFactor::One => opengl_rs::def::BlendingFactor::One as _,
+        BlendFactor::SrcColor => opengl_rs::def::BlendingFactor::SrcColor as _,
+        BlendFactor::OneMinusSrcColor => opengl_rs::def::BlendingFactor::OneMinusSrcColor as _,
+        BlendFactor::DstColor => opengl_rs::def::BlendingFactor::DstColor as _,
+        BlendFactor::OneMinusDstColor => opengl_rs::def::BlendingFactor::OneMinusDstColor as _,
+        BlendFactor::SrcAlpha => opengl_rs::def::BlendingFactor::SrcAlpha as _,
+        BlendFactor::OneMinusSrcAlpha => opengl_rs::def::BlendingFactor::OneMinusSrcAlpha as _,
+        BlendFactor::DstAlpha => opengl_rs::def::BlendingFactor::DstAlpha as _,
+        BlendFactor::OneMinusDstAlpha => opengl_rs::def::BlendingFactor::OneMinusDstAlpha as _,
+        BlendFactor::SrcAlphaSaturate => opengl_rs::def::BlendingFactor::SrcAlphaSaturate as _,
     }
 }
 

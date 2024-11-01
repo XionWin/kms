@@ -1,4 +1,4 @@
-use gles_rs::GfxProgram;
+use opengl_rs::GfxProgram;
 use kms_rs::Graphic;
 use nvg_rs::context::Vertex;
 // use once_cell::sync::Lazy;
@@ -23,35 +23,35 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
     ];
     
     let mut vao = 0u32;
-    gles_rs::gen_vertex_arrays(1, &mut vao);
-    gles_rs::bind_vertex_array(vao);
+    opengl_rs::gen_vertex_arrays(1, &mut vao);
+    opengl_rs::bind_vertex_array(vao);
     
-    let vbos = gles_rs::gen_buffers(2);
-    gles_rs::bind_buffer(gles_rs::def::BufferTarget::ArrayBuffer, vbos[0]);
-    gles_rs::buffer_data(
-        gles_rs::def::BufferTarget::ArrayBuffer,
+    let vbos = opengl_rs::gen_buffers(2);
+    opengl_rs::bind_buffer(opengl_rs::def::BufferTarget::ArrayBuffer, vbos[0]);
+    opengl_rs::buffer_data(
+        opengl_rs::def::BufferTarget::ArrayBuffer,
         vertexes.as_slice(),
-        gles_rs::def::BufferUsageHint::StaticDraw
+        opengl_rs::def::BufferUsageHint::StaticDraw
     );
 
-    gles_rs::bind_buffer(gles_rs::def::BufferTarget::ElementArrayBuffer, vbos[1]);
-    gles_rs::buffer_data(
-        gles_rs::def::BufferTarget::ElementArrayBuffer,
+    opengl_rs::bind_buffer(opengl_rs::def::BufferTarget::ElementArrayBuffer, vbos[1]);
+    opengl_rs::buffer_data(
+        opengl_rs::def::BufferTarget::ElementArrayBuffer,
         indices.as_slice(),
-        gles_rs::def::BufferUsageHint::StaticDraw
+        opengl_rs::def::BufferUsageHint::StaticDraw
     );
 
-    let vertex_idx = gles_rs::get_attrib_location(program.get_id(), "aVertex");
-    gles_rs::enable_vertex_attrib_array(vertex_idx);
-    gles_rs::vertex_attrib_pointer_f32(
+    let vertex_idx = opengl_rs::get_attrib_location(program.get_id(), "aVertex");
+    opengl_rs::enable_vertex_attrib_array(vertex_idx);
+    opengl_rs::vertex_attrib_pointer_f32(
         vertex_idx, 
         2, 
         false,
         std::mem::size_of::<Vertex>() as _, 
         0);
-    let coord_idx = gles_rs::get_attrib_location(program.get_id(), "aCoord");
-    gles_rs::enable_vertex_attrib_array(coord_idx);
-    gles_rs::vertex_attrib_pointer_f32(
+    let coord_idx = opengl_rs::get_attrib_location(program.get_id(), "aCoord");
+    opengl_rs::enable_vertex_attrib_array(coord_idx);
+    opengl_rs::vertex_attrib_pointer_f32(
         coord_idx, 
         2, 
         false,
@@ -60,11 +60,11 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
 
    
     
-    gles_rs::uniform_1i(gles_rs::get_uniform_location(program.get_id(), "uTexture"), 0);
-    let texture = gles_rs::GfxTexture::new(gles_rs::def::TextureUnit::Texture0, gles_rs::def::TextureMinFilter::Nearest);
+    opengl_rs::uniform_1i(opengl_rs::get_uniform_location(program.get_id(), "uTexture"), 0);
+    let texture = opengl_rs::GfxTexture::new(opengl_rs::def::TextureUnit::Texture0, opengl_rs::def::TextureMinFilter::Nearest);
     
     let image_data = image.to_rgba8().into_vec();
-    let image_data = gles_rs::ImageData {
+    let image_data = opengl_rs::ImageData {
         width: image_width as _,
         height: image_height as _,
         value: image_data
@@ -85,15 +85,15 @@ pub fn update(graphic: &mut Graphic<GfxProgram>) {
     //     % 1f64;
     // let hsv = nvg_rs::color::Color::hsl(h as _, 1.0, 0.35);
     // let (r, g, b, a) = hsv.into();
-    // gles_rs::clear_color(r, g, b, a);
+    // opengl_rs::clear_color(r, g, b, a);
 
-    gles_rs::clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-    gles_rs::bind_vertex_array(1);
+    opengl_rs::clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+    opengl_rs::bind_vertex_array(1);
     // Enable Alpha
-    gles_rs::enable(gles_rs::def::EnableCap::Blend);
-    gles_rs::blend_func(gles_rs::def::BlendingFactor::SrcAlpha, gles_rs::def::BlendingFactor::OneMinusSrcAlpha);
+    opengl_rs::enable(opengl_rs::def::EnableCap::Blend);
+    opengl_rs::blend_func(opengl_rs::def::BlendingFactor::SrcAlpha, opengl_rs::def::BlendingFactor::OneMinusSrcAlpha);
     
-    gles_rs::uniform_1i(gles_rs::get_uniform_location(graphic.get_tag().get_id(), "uTexture"), 0);
+    opengl_rs::uniform_1i(opengl_rs::get_uniform_location(graphic.get_tag().get_id(), "uTexture"), 0);
 
-    gles_rs::draw_elements::<u32>(gles_rs::def::BeginMode::Triangles, 6, gles_rs::def::DrawElementsType::UnsignedInt, None);
+    opengl_rs::draw_elements::<u32>(opengl_rs::def::BeginMode::Triangles, 6, opengl_rs::def::DrawElementsType::UnsignedInt, None);
 }

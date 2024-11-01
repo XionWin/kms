@@ -1,16 +1,13 @@
+use crate::{def::StringName, LibraryLoader};
 use libc::{c_char, c_float, c_int, c_uint};
 use std::{
     ffi::{CStr, CString},
     str::from_utf8,
 };
-use crate::{def::StringName, LibraryLoader};
 
 pub fn load() {
     let loader = LibraryLoader::new("libGLESv2.so.2");
-    gl::load_with(|name| {
-        println!("name: {name}");
-        loader.get_proc_address(name)
-    });
+    gl::load_with(|name| loader.get_proc_address(name));
 }
 
 pub fn get_string(name: StringName) -> Option<String> {
@@ -57,9 +54,11 @@ pub fn delete_shader(shader_id: c_uint) {
 }
 
 pub fn shader_source(shader_id: c_uint, source_code: &str) {
-    let mut source = source_code.bytes().collect::<Vec<_>>();
-    source.push(b'\0');
-    let sources = vec![source.as_ptr()];
+    let source = String::from(source_code);
+    let source_cstring = std::ffi::CString::new(source).unwrap();
+    // let mut source = source_code.bytes().collect::<Vec<_>>();
+    // source.push(b'\0');
+    let sources = vec![source_cstring.as_ptr()];
     unsafe { gl::ShaderSource(shader_id, 1, sources.as_ptr(), std::ptr::null()) }
 }
 

@@ -14,5 +14,5 @@ time = { version = "*", features = ["local-offset", "formatting", "macros"] }
 slab = "*"
 image = "*"
 colored-rs = { path="../colored-rs" }
-gles-rs = { path="../gles-rs" }
+opengl-rs = { path="../opengl-rs" }
 nvg-rs = { path="../nvg-rs" }

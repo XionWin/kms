@@ -7,7 +7,7 @@ members = [
     "kernel/gbm-rs",
     "kernel/egl-rs",
     "kernel/kms-rs",
-    "gles-rs",
+    "opengl-rs",
     "nvg-rs",
     "nvg-gl-rs", 
     "pencil-rs"
