@@ -14,9 +14,9 @@ pub(crate) enum OpenFlag {
     RtldDeepbind = 0x00010,    /* Use deep binding.  */
 }
 
-impl Into<libc::c_int> for OpenFlag {
-    fn into(self) -> libc::c_int {
-        self as libc::c_int
+impl Into<std::ffi::c_int> for OpenFlag {
+    fn into(self) -> std::ffi::c_int {
+        self as std::ffi::c_int
     }
 }
 
@@ -30,7 +30,7 @@ impl LibraryLoader {
         }
     }
 
-    pub fn get_proc_address(&self, function_name: &str) -> *const libc::c_void {
+    pub fn get_proc_address(&self, function_name: &str) -> *const std::ffi::c_void {
         unsafe {
             let cstr = CString::new(function_name).unwrap();
             let ptr = cstr.as_ptr();

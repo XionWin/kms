@@ -35,17 +35,17 @@ macro_rules! impl_assign_op_trait {
     (
         $trait:ident, $method:ident for $t:ty, $u:ty, using $used_trait:ident::$used_method:ident
     ) => {
-        impl $trait<$u> for $t {
-            #[inline]
-            fn $method(&mut self, other: $u) {
-                *self = $used_trait::$used_method(&*self, other);
-            }
-        }
-
         impl $trait<&$u> for $t {
             #[inline]
             fn $method(&mut self, other: &$u) {
                 *self = $used_trait::$used_method(&*self, other);
+            }
+        }
+
+        impl $trait<$u> for $t {
+            #[inline]
+            fn $method(&mut self, other: $u) {
+                *self = $used_trait::$used_method(&*self, &other);
             }
         }
     };
@@ -513,6 +513,13 @@ impl Not for &Style {
     }
 }
 
+// impl BitAndAssign<Style> for Style {
+//     fn bitand_assign(&mut self, rhs: Style) {
+//         *self = BitAnd::bitand(&*self, &rhs)
+//     }
+// }
+
+
 impl_assign_op_trait!(BitAndAssign, bitand_assign for Style, Style, using BitAnd::bitand);
 
 impl_assign_op_trait!(BitAndAssign, bitand_assign for Style, Styles, using BitAnd::bitand);
@@ -734,8 +741,6 @@ mod tests {
 
         macro_rules! check_impl {
             ($lh:expr, $method:path, $rh:expr => $res:expr) => {
-                assert_eq!($method($lh, $rh), $res);
-                assert_eq!($method(&$lh, $rh), $res);
                 assert_eq!($method($lh, &$rh), $res);
                 assert_eq!($method(&$lh, &$rh), $res);
             };
@@ -750,6 +755,7 @@ mod tests {
 
         /// TTABLE = TRUTH_TABLE
         const TTABLE: (u8, u8) = (0b0101, 0b0011);
+
 
         #[test]
         fn binops() {

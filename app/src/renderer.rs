@@ -1,22 +1,33 @@
 use opengl_rs::GfxProgram;
 use kms_rs::Graphic;
 use nvg_rs::context::Vertex;
+
+use crate::image_scaler;
 // use once_cell::sync::Lazy;
 
 pub fn init(graphic: &mut Graphic<GfxProgram>) {
     let (width, height) = (graphic.get_width() as f32, graphic.get_height() as f32);
     let program = graphic.get_tag_mut();
     
-    let image = image::ImageReader::open("resources/images/bg_3.png").unwrap().decode().unwrap();
+    let image = image::ImageReader::open("resources/images/bg_4.png").unwrap().decode().unwrap();
     let (image_width, image_height) = (image.width() as f32, image.height() as f32);
-    let (x, y, w, h) = ((width - image_width) / 2.0, (height - image_height) / 2.0, image_width, image_height);
+    // let (x, y, w, h) = ((width - image_width) / 2.0, (height - image_height) / 2.0, image_width, image_height);
+
+    let (su, eu, sv, ev) = image_scaler::stretch_image(width as _, height as _, image_width as _, image_height as _);
 
     let vertexes = vec![
-        Vertex::new(x, y, 0.0, 0.0),
-        Vertex::new(x + w, y + h, 1.0, 1.0),
-        Vertex::new(x, y + h, 0.0, 1.0),
-        Vertex::new(x + w, y, 1.0, 0.0)
+        Vertex::new(0f32, 0f32, su, sv),
+        Vertex::new(0f32 + width, 0f32 + height, eu, ev),
+        Vertex::new(0f32, 0f32 + height, su, ev),
+        Vertex::new(0f32 + width, 0f32, eu, sv)
     ];
+
+    // let vertexes = vec![
+    //     Vertex::new(x, y, 0.0, 0.0),
+    //     Vertex::new(x + w, y + h, 1.0, 1.0),
+    //     Vertex::new(x, y + h, 0.0, 1.0),
+    //     Vertex::new(x + w, y, 1.0, 0.0)
+    // ];
     let indices: Vec<u32> = vec![
         0, 1, 2,
         0, 3, 1
@@ -61,7 +72,7 @@ pub fn init(graphic: &mut Graphic<GfxProgram>) {
    
     
     opengl_rs::uniform_1i(opengl_rs::get_uniform_location(program.get_id(), "uTexture"), 0);
-    let texture = opengl_rs::GfxTexture::new(opengl_rs::def::TextureUnit::Texture0, opengl_rs::def::TextureMinFilter::Nearest);
+    let texture = opengl_rs::GfxTexture::new(opengl_rs::def::TextureUnit::Texture0, opengl_rs::def::TextureFilter::Linear);
     
     let image_data = image.to_rgba8().into_vec();
     let image_data = opengl_rs::ImageData {

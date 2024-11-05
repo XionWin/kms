@@ -1,5 +1,7 @@
+#[repr(u32)]
 #[derive(Debug, Clone, Copy)]
-pub enum TextureMinFilter {
+pub enum TextureMinFilter
+{
     Nearest = 9728,
     Linear = 9729,
     NearestMipmapNearest = 9984,
@@ -13,5 +15,5 @@ pub enum TextureMinFilter {
     PixelTexGenQFloorSgix = 33158,
     NearestClipmapNearestSgix = 33869,
     NearestClipmapLinearSgix = 33870,
-    LinearClipmapNearestSgix = 33871
+    LinearClipmapNearestSgix = 33871,
 }

@@ -1,13 +1,13 @@
 use libc::*;
 
-use crate::def::{TextureUnit, TextureMinFilter};
+use crate::def::{TextureFilter, TextureUnit};
 
 #[derive(Debug)]
 pub struct GfxTexture
 {
     pub id: c_uint,
     pub texture_unit: TextureUnit,
-    pub texture_min_filter: TextureMinFilter,
+    pub texture_filter: TextureFilter,
 }
 
 #[derive(Debug)]
@@ -19,11 +19,11 @@ pub struct ImageData
 }
 
 impl GfxTexture {
-    pub fn new(texture_unit: TextureUnit, texture_min_filter: TextureMinFilter) -> Self {
+    pub fn new(texture_unit: TextureUnit, texture_filter: TextureFilter) -> Self {
         Self {
             id: crate::gen_texture(),
             texture_unit,
-            texture_min_filter
+            texture_filter
         }
     }
 
@@ -40,8 +40,8 @@ impl GfxTexture {
         // You could also use (amongst other options) Nearest, which just grabs the nearest pixel, which makes the texture look pixelated if scaled too far.
         // NOTE: The default settings for both of these are LinearMipmap. If you leave these as default but don't generate mipmaps,
         // your image will fail to render at all (usually resulting in pure black instead).
-        crate::tex_parameter_i(crate::def::TextureTarget::Texture2D, crate::def::TextureParameterName::TextureMinFilter, self.texture_min_filter as _);
-        crate::tex_parameter_i(crate::def::TextureTarget::Texture2D, crate::def::TextureParameterName::TextureMagFilter, self.texture_min_filter as _);
+        crate::tex_parameter_i(crate::def::TextureTarget::Texture2D, crate::def::TextureParameterName::TextureMinFilter, self.texture_filter.to_texture_min_filter() as _);
+        crate::tex_parameter_i(crate::def::TextureTarget::Texture2D, crate::def::TextureParameterName::TextureMagFilter, self.texture_filter.to_texture_mag_filter() as _);
 
         // Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
         // We set this to Repeat so that textures will repeat when wrapped. Not demonstrated here since the texture coordinates exactly match

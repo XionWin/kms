@@ -103,11 +103,12 @@ impl KMS {
 
 #[macro_export]
 macro_rules! begin_render {
-    ($init:ident, $update:ident, $kms:expr) => {
+    ($init:ident, $update:ident, $kms:expr, $fps_counter:expr) => {
         let mut graphic = $init($kms);
         loop {
             $update($kms, &mut graphic);
             $kms.wait_vertical_synchronize();
+            $fps_counter.update();
         }
     };
 }

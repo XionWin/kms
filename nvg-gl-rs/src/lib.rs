@@ -513,47 +513,61 @@ impl renderer::Renderer for Renderer {
                 }
             }
 
-            if flags.contains(ImageFlags::GENERATE_MIPMAPS) {
-                if flags.contains(ImageFlags::NEAREST) {
-                    opengl_rs::tex_parameter_i(
-                        opengl_rs::def::TextureTarget::Texture2D,
-                        opengl_rs::def::TextureParameterName::TextureMinFilter,
-                        opengl_rs::def::TextureMinFilter::NearestMipmapNearest as _,
-                    );
-                } else {
-                    opengl_rs::tex_parameter_i(
-                        opengl_rs::def::TextureTarget::Texture2D,
-                        opengl_rs::def::TextureParameterName::TextureMinFilter,
-                        opengl_rs::def::TextureMinFilter::LinearMipmapLinear as _,
-                    );
-                }
+            if flags.contains(ImageFlags::NEAREST) {
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureMinFilter,
+                    opengl_rs::def::TextureFilter::Nearest as _,
+                );
             } else {
-                if flags.contains(ImageFlags::NEAREST) {
-                    opengl_rs::tex_parameter_i(
-                        opengl_rs::def::TextureTarget::Texture2D,
-                        opengl_rs::def::TextureParameterName::TextureMinFilter,
-                        opengl_rs::def::TextureMinFilter::Nearest as _,
-                    );
-                } else {
-                    opengl_rs::tex_parameter_i(
-                        opengl_rs::def::TextureTarget::Texture2D,
-                        opengl_rs::def::TextureParameterName::TextureMinFilter,
-                        opengl_rs::def::TextureMinFilter::Linear as _,
-                    );
-                }
+                opengl_rs::tex_parameter_i(
+                    opengl_rs::def::TextureTarget::Texture2D,
+                    opengl_rs::def::TextureParameterName::TextureMinFilter,
+                    opengl_rs::def::TextureFilter::Linear as _,
+                );
             }
+
+            // if flags.contains(ImageFlags::GENERATE_MIPMAPS) {
+            //     if flags.contains(ImageFlags::NEAREST) {
+            //         opengl_rs::tex_parameter_i(
+            //             opengl_rs::def::TextureTarget::Texture2D,
+            //             opengl_rs::def::TextureParameterName::TextureMinFilter,
+            //             opengl_rs::def::TextureFilter::NearestMipmapNearest as _,
+            //         );
+            //     } else {
+            //         opengl_rs::tex_parameter_i(
+            //             opengl_rs::def::TextureTarget::Texture2D,
+            //             opengl_rs::def::TextureParameterName::TextureMinFilter,
+            //             opengl_rs::def::TextureFilter::LinearMipmapLinear as _,
+            //         );
+            //     }
+            // } else {
+            //     if flags.contains(ImageFlags::NEAREST) {
+            //         opengl_rs::tex_parameter_i(
+            //             opengl_rs::def::TextureTarget::Texture2D,
+            //             opengl_rs::def::TextureParameterName::TextureMinFilter,
+            //             opengl_rs::def::TextureFilter::Nearest as _,
+            //         );
+            //     } else {
+            //         opengl_rs::tex_parameter_i(
+            //             opengl_rs::def::TextureTarget::Texture2D,
+            //             opengl_rs::def::TextureParameterName::TextureMinFilter,
+            //             opengl_rs::def::TextureFilter::Linear as _,
+            //         );
+            //     }
+            // }
 
             if flags.contains(ImageFlags::NEAREST) {
                 opengl_rs::tex_parameter_i(
                     opengl_rs::def::TextureTarget::Texture2D,
                     opengl_rs::def::TextureParameterName::TextureMagFilter,
-                    opengl_rs::def::TextureMinFilter::Nearest as _,
+                    opengl_rs::def::TextureFilter::Nearest as _,
                 );
             } else {
                 opengl_rs::tex_parameter_i(
                     opengl_rs::def::TextureTarget::Texture2D,
                     opengl_rs::def::TextureParameterName::TextureMagFilter,
-                    opengl_rs::def::TextureMinFilter::Linear as _,
+                    opengl_rs::def::TextureFilter::Linear as _,
                 );
             }
 

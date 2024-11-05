@@ -2,10 +2,10 @@
 // extern crate bitflags;
 
 pub mod def;
-mod opengl;
+mod gl;
 mod gfx;
 mod library_loader;
 
 pub(crate) use library_loader::*;
-pub use opengl::*;
+pub use gl::*;
 pub use gfx::*;

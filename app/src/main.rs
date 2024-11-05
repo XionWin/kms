@@ -12,6 +12,8 @@ mod utility;
 mod renderer;
 mod shape;
 mod pencil_test;
+mod image_scaler;
+mod fps_counter;
 
 pub use shape::*;
 
@@ -28,7 +30,8 @@ fn main() {
 
     opengl_rs::load();
 
-    begin_render!(init, update, &mut kms);
+    let mut fps_counter = crate::fps_counter::FpsCounter::new(100);
+    begin_render!(init, update, &mut kms, &mut fps_counter);
 }
 
 pub fn init(kms: &mut kms_rs::KMS) -> Graphic<GfxProgram> {
