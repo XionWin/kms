@@ -14,7 +14,7 @@
             "cwd": "${workspaceRoot}/target/aarch64-unknown-linux-gnu/debug/",
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb-multiarch",
-            "miDebuggerServerAddress": "192.168.0.206:17777",
+            "miDebuggerServerAddress": "192.168.0.209:17777",
         }
     ]
 }
